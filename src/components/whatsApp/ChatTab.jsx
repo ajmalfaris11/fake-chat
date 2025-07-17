@@ -1,12 +1,24 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
+
+
 
 export default function ChatTab({ i, chat }) {
+
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+
+        navigate(`chat/${chat.name}`);
+    };
+
     return (
         <div className="flex flex-col divide-y divide-gray-800">
 
             <div
                 key={i}
                 className="flex items-center px-4 py-3 hover:bg-gray-800 relative"
+                onClick={handleClick}
             >
                 {/* Avatar */}
                 {chat.image ? (
@@ -38,7 +50,7 @@ export default function ChatTab({ i, chat }) {
                 {/* Right: Pinned / Count */}
                 <div className="ml-2 flex flex-col gap-1 items-end justify-between h-full">
                     <span
-                        className={`text-xs font-[500] ${chat.unreadCount > 0 ? 'text-[#29ba6b]' : 'text-gray-500' }`}
+                        className={`text-xs font-[500] ${chat.unreadCount > 0 ? 'text-[#29ba6b]' : 'text-gray-500'}`}
                     >
                         {chat.time}
                     </span>
