@@ -4,7 +4,7 @@ import { Carousel } from "@material-tailwind/react";
 import buildTrust from "../assets/Carousel/buildTrust.webp";
 import increaseSales from "../assets/Carousel/increaseSales.webp";
 
-export default function CarouselCustomNavigation() {
+export function CarouselCustomNavigation() {
   return (
     <Carousel
       className="top-2 rounded-2xl"

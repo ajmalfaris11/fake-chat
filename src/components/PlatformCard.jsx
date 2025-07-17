@@ -11,7 +11,7 @@ export default function PlatformCard({ platform, onClick }) {
         alt={`${platform.name} logo`}
         className="mb-2 rounded-xl w-full h-32 object-contain"
       />
-      <h2 className="text-lg font-semibold">{platform.name}</h2>
+      <h2 className="text-lg font-semibold text-gray-900">{platform.name}</h2>
       <p className="text-sm text-gray-600">{platform.description}</p>
     </div>
   );
