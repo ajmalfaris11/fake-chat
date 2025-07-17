@@ -11,7 +11,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/whats-app" element={<WhatsAppHomePage />} />
-        <Route path="/whats-app/chat/${chat.id}" element={<ChatgPage />} />
+        <Route path="/whats-app/chat/:id" element={<ChatgPage />} />
       </Routes>
     </BrowserRouter>
   );

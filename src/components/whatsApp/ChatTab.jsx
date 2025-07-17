@@ -9,7 +9,7 @@ export default function ChatTab({ i, chat }) {
 
     const handleClick = () => {
 
-        navigate(`chat/${chat.name}`);
+        navigate(`/whats-app/chat/${chat.id}`, { state: { chat } });
     };
 
     return (
