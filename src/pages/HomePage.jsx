@@ -40,7 +40,7 @@ export default function HomePage() {
             key={idx}
             platform={platform}
             onClick={() =>
-              navigate(`/${platform.platform.toLowerCase()}/option`)
+              navigate(`/${platform.platform.toLowerCase()}`)
             }
           />
         ))}
