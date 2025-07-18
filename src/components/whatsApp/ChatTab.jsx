@@ -17,7 +17,7 @@ export default function ChatTab({ i, chat }) {
 
             <div
                 key={i}
-                className="flex items-center px-4 py-3 hover:bg-gray-800 relative"
+                className="flex items-center px-4 py-3 hover:bg-gray-700/25 relative"
                 onClick={handleClick}
             >
                 {/* Avatar */}
