@@ -1,7 +1,8 @@
 import React from "react";
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useEffect, useRef } from "react";
+
 
 import bgImg from '../assets/personal/bgImg.png'
 
@@ -16,6 +17,12 @@ export default function ChatPage() {
   const chatEndRef = useRef(null);
 
 
+
+  const navigate = useNavigate();
+
+  const goBack = () => {
+    navigate("/whats-app");
+  };
 
 
   const messages = [
@@ -61,9 +68,10 @@ FASHION FRIDAY 🛒`,
     }
   }, [messages.length]);
 
+
   return (
     <div
-      className="h-screen text-white font-sans bg-cover bg-center relative"
+      className="h-screen text-white font-sans bg-cover bg-center relative select-none"
       style={{ backgroundImage: `url(${bgImg})` }}
     >
       <div className="absolute inset-0 bg-black bg-opacity-80">
@@ -71,7 +79,7 @@ FASHION FRIDAY 🛒`,
           {/* Header */}
           <div className="flex justify-between items-center gap-3 sticky z-[100] top-0 bg-[#0c1013] p-3">
             <div className="flex gap-2 items-center w-full">
-              <span class="material-symbols-outlined text-gray-300">
+              <span className="material-symbols-outlined text-gray-300 rounded-fullcursor-pointer [tap-highlight-color:transparent]" onClick={goBack} >
                 arrow_left_alt
               </span>
               <img

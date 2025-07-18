@@ -55,7 +55,7 @@ const chats = [
 
 export default function WhatsAppHomePage() {
     return (
-        <div className="w-full max-w-md mx-auto bg-black text-white min-h-screen font-sans ">
+        <div className="w-full max-w-md mx-auto text-white min-h-screen font-sans bg-[#0c1114] select-none">
             {/* Header */}
             <div className="flex justify-between items-center p-4 text-xl font-semibold border-b-[0.5px] border-gray-900 bg-[#0c1114]">
                 <span>WhatsApp</span>
@@ -70,7 +70,7 @@ export default function WhatsAppHomePage() {
             <div className="overflow-scroll h-[80vh] bg-[#0c1013]">
                 {/* Filters */}
                 <div
-                    className="flex gap-3 text-sm px-2 py-3 w-full overflow-x-auto"
+                    className="flex gap-3 text-sm px-2 py-5 w-full overflow-x-auto"
                     style={{
                         scrollbarWidth: 'none',
                         msOverflowStyle: 'none'
@@ -105,7 +105,7 @@ export default function WhatsAppHomePage() {
             </div>
 
             {/* Bottom Nav */}
-            <div className="fixed bottom-0 w-full max-w-md bg-black border-t-[0.5px] border-gray-900 flex justify-around py-4 text-gray-300 bg-[#0c1013]">
+            <div className="fixed bottom-0 w-full max-w-md border-t-[0.5px] border-gray-900 flex justify-around py-3 text-gray-300 bg-[#0c1114]">
                 {[
                     { icon: "chat", label: "Chats", count: 99 },
                     { icon: "call", label: "Calls", count: "" },
@@ -116,7 +116,7 @@ export default function WhatsAppHomePage() {
                         <span className={`${item.icon == "chat" ? "material-symbols-outlined bg-gray-800/50" : "material-symbols-sharp"} text-2xl rounded-full px-5`}>
                             {item.icon}
                         </span>
-                        <span className="text-sm">{item.label}</span>
+                        <span className="text-sm mt-1 font-[500]">{item.label}</span>
                         {item.count && (
                             <div className={`absolute top-0 text-xs bg-green-600 text-white ${item.icon == "chat" ? "w-6 h-1 py-2 right-1" : "w-3 h-3 right-3"} rounded-full flex items-center justify-center text-[#0c1013]`}>
                                 {item.count}
