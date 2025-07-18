@@ -1,8 +1,7 @@
 import React from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
-import { useEffect, useRef } from "react";
-
+import { useEffect, useState, useRef } from "react";
 
 import bgImg from '../assets/personal/bgImg.png'
 
@@ -13,16 +12,47 @@ export default function ChatPage() {
   const { id } = useParams();
   const location = useLocation();
   const chat = location.state?.chat;
-
   const chatEndRef = useRef(null);
-
-
-
   const navigate = useNavigate();
+
+  const [userData, setUserData] = useState({
+    name: "",
+    profile: "",
+    status: "",
+  })
+
+  const [showPopup, setShowPopup] = useState(false);
+  const [editData, setEditData] = useState(userData);
+
+  const fileInputRef = useRef(null);
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setUserData(prev => ({ ...prev, profile: reader.result }));
+        setEditData({ ...editData, profile: reader.result })
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const chatData = {
+    "chat": [{
+      "from": "",
+      "message": "",
+      "time": "",
+      "type": "",
+    }],
+    mode: "",
+  }
+
+
 
   const goBack = () => {
     navigate("/whats-app");
   };
+
 
 
   const messages = [
@@ -74,22 +104,89 @@ FASHION FRIDAY 🛒`,
       className="h-screen text-white font-sans bg-cover bg-center relative select-none"
       style={{ backgroundImage: `url(${bgImg})` }}
     >
+
+      {/* Popup Editor */}
+      {showPopup && (
+        <div className="fixed inset-0 bg-black flex justify-center items-center z-50 h-[100vh] relative w-full">
+          <div className="bg-gray-900/50 space-y-4 shadow-lg h-full w-full flex  flex-col items-center">
+            <h3 className="text-lg font-bold mb-2 bg-gray-900/50 w-full text-center p-4 border-b-[0.5px] border-gray-800">EDIT PROFILE</h3>
+
+            <div
+              className="w-[100px] h-[100px] bg-white rounded-full relative flex justify-center items-center bg-cover bg-center"
+              style={{ backgroundImage: `url(${userData.profile || chat.image})` }}
+              onClick={() => fileInputRef.current.click()}
+            >
+              <input
+                type="file"
+                accept="image/*"
+                ref={fileInputRef}
+                className="hidden"
+                onChange={handleImageChange}
+              />
+
+              <div className="w-5 h-5 rounded-full bg-green-500 absolute z-10 right-3 bottom-1 flex justify-center items-center cursor-pointer">
+                <span className="material-symbols-sharp text-sm text-white">edit</span>
+              </div>
+            </div>
+
+            <div className="p-6 flex flex-col gap-4 w-full">
+              <input
+                type="text"
+                placeholder="Name"
+                value={editData.name}
+                onChange={(e) =>
+                  setEditData({ ...editData, name: e.target.value })
+                }
+                className="w-full px-4 py-4 border border-gray-700 rounded-2xl bg-transparent text-white"
+              />
+              <input
+                type="text"
+                placeholder="Status"
+                value={editData.status}
+                onChange={(e) =>
+                  setEditData({ ...editData, status: e.target.value })
+                }
+                className="w-full px-4 py-4 border border-gray-700 rounded-2xl bg-transparent text-white"
+              />
+            </div>
+
+            <div className="flex w-full justify-between fixed bottom-0">
+              <button
+                onClick={() => setShowPopup(false)}
+                className="px-3 py-4 bg-white text-black w-[50%] rounded-tl-[24px] font-bold text-lg"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  setUserData(editData);
+                  setShowPopup(false);
+                }}
+                className="px-3 py-4 bg-green-700 text-white w-[50%] rounded-tr-[24px] font-bold text-lg"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="absolute inset-0 bg-black bg-opacity-80">
         <div className="relative z-0">
           {/* Header */}
           <div className="flex justify-between items-center gap-3 sticky z-[100] top-0 bg-[#0c1013] p-3">
-            <div className="flex gap-2 items-center w-full">
+            <div className="flex gap-2 items-center w-full" onClick={() => setShowPopup(true)}>
               <span className="material-symbols-outlined text-gray-300 rounded-fullcursor-pointer [tap-highlight-color:transparent]" onClick={goBack} >
                 arrow_left_alt
               </span>
               <img
-                src={chat.image}
+                src={userData.profile ? userData.profile : chat.image}
                 alt="Profile"
-                className="w-10 h-10 rounded-full"
+                className="w-10 h-10 rounded-full object-cover object-center"
               />
               <div>
-                <h2 className="text-lg text-gray-300">{chat.name}</h2>
-                <p className="text-xs text-gray-400">online</p>
+                <h2 className="text-lg text-gray-300">{userData.name != "" ? userData.name : chat.name}</h2>
+                <p className="text-xs text-gray-400">{userData.status != "" ? userData.status : "online"}</p>
               </div>
             </div>
 
