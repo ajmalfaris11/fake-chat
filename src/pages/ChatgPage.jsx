@@ -98,6 +98,12 @@ FASHION FRIDAY 🛒`,
     }
   }, [messages.length]);
 
+  const [message, setMessage] = useState('');
+
+  const handleChange = (e) => {
+    setMessage(e.target.value);
+    console.log('Message:', e.target.value);
+  };
 
   return (
     <div
@@ -241,6 +247,8 @@ FASHION FRIDAY 🛒`,
               <input
                 type="text"
                 placeholder="Message"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
                 className="flex-1 px-4 py-2 bg-transparent w-[90%] text-white text-lg focus:outline-none placeholder-gray-600"
               />
               <div className="flex gap-4">
@@ -248,17 +256,32 @@ FASHION FRIDAY 🛒`,
                   attach_file
                 </span>
 
-                <span class="material-symbols-rounded">
-                  photo_camera
-                </span>
+                {!message.length > 0 && (
+                  <span className="material-symbols-rounded">
+                    photo_camera
+                  </span>
+                )}
 
               </div>
             </div>
-            <button className="flex items-center justify-center bg-[#fafafa] hover:bg-[#128c7e] text-gray-900 w-[50px] h-[50px] px-4 py-2 rounded-full">
-              <span class="material-symbols-outlined">
-                mic
-              </span>
-            </button>
+            {!message.length > 0 ? (
+              <button className="flex items-center justify-center bg-[#fafafa] hover:bg-[#128c7e] text-gray-900 w-[50px] h-[50px] px-4 py-2 rounded-full">
+                <span class="material-symbols-outlined">
+                  mic
+                </span>
+              </button>
+            ) : ""}
+
+            {message.length > 0 && (
+              <div className="flex gap-2">
+                <span className="material-symbols-outlined rotate-180 bg-white w-12 h-12 rounded-full text-gray-900 text-[100] flex justify-center items-center text-center text-3xl leading-none">
+                  send
+                </span>
+                <span className="material-symbols-outlined bg-white w-12 h-12 rounded-full text-gray-900 text-[100] flex justify-center items-center text-center text-3xl leading-none">
+                  send
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </div>
