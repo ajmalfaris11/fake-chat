@@ -2,16 +2,20 @@ import React, { useState } from 'react';
 import '../styles/ToggleSwitch.css';
 
 
-function ToggleSwitch() {
+function ToggleSwitch({ onToggle }) {
     const [isOn, setIsOn] = useState(false);
 
     const toggle = () => {
-        setIsOn(prev => !prev);
+        const newState = !isOn;
+        setIsOn(newState);
+        if (onToggle) {
+            onToggle(newState);
+        }
     };
 
     return (
         <div className="toggle-container">
-            <div className={`switch ${isOn ? 'on' : ''}`} onClick={toggle}>
+            <div className={`switch ${isOn ? 'on' : ''}`} onClick={toggle}>                
                 <div className="circle" />
             </div>
         </div>

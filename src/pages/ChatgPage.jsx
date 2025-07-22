@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 
 import bgImg from "../assets/personal/bgImg.png";
+import ToggleSwitch from "../components/ToggleSwitch";
 
 export default function ChatPage() {
   const { id } = useParams();
@@ -20,6 +21,16 @@ export default function ChatPage() {
 
   const [showPopup, setShowPopup] = useState(false);
   const [editData, setEditData] = useState(userData);
+  const [showMenu, setShowMenu] = useState(false)
+  const [isSwitchOn, setIsSwitchOn] = useState(false);
+
+  const handleToggle = () => {
+    setIsSwitchOn(prev => {
+      const newState = !prev;
+      console.log("Toggle is now:", newState);
+      return newState;
+    });
+  };
 
   const fileInputRef = useRef(null);
   const handleImageChange = (e) => {
@@ -61,13 +72,13 @@ export default function ChatPage() {
       location: "oponent",
     },
     {
-      id: 3,
+      id: 4,
       type: "text",
       message: "K bro",
       time: "7:23 PM",
     },
     {
-      id: 3,
+      id: 5,
       type: "text",
       message: "wait",
       time: "7:23 PM",
@@ -75,7 +86,7 @@ export default function ChatPage() {
     },
 
     {
-      id: 4,
+      id: 6,
       message: `Hi!We’ve received your payment successfully ✅
 Your order is now being packed 📦 and will be dispatched soon ✈️
 
@@ -83,7 +94,7 @@ Thank you for shopping with
 FASHION FRIDAY 🛒`,
       time: "7:54 PM",
     },
-    { id: 5, message: "Bro size", time: "7:58 PM" },
+    { id: 7, message: "Bro size", time: "7:58 PM" },
   ];
 
   // Scroll to bottom on mount or new message
@@ -99,6 +110,26 @@ FASHION FRIDAY 🛒`,
     setMessage(e.target.value);
     console.log("Message:", e.target.value);
   };
+
+  const menuRef = useRef(null);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setShowMenu(false);
+      }
+    };
+
+    if (showMenu) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showMenu]);
+
 
   return (
     <div
@@ -177,13 +208,48 @@ FASHION FRIDAY 🛒`,
         </div>
       )}
 
+      {/* popup Menu Box */}
+      <div ref={menuRef} className={`absolute z-50 relative ${showMenu ? "bloxk" : "hidden"}`} >
+        <div className="w-[100vw] h-[100vh]" onClick={() => setShowMenu(false)}>
+        </div>
+        <div className="flex flex-col w-52 h-auto bg-[#0c1013] rounded-xl absolute right-1 top-[70px] px-5 py-5 z-30 gap-6">
+          <div className="flex justify-between items-center">
+            <span>OG MOD</span>
+            <ToggleSwitch onToggle={handleToggle} />
+          </div>
+          <span>
+            Label Chat
+          </span>
+          <span>
+            View contact
+          </span>
+          <span>
+            Report
+          </span>
+          <span>
+            Block
+          </span>
+          <span>
+            Search
+          </span>
+          <span>
+            Mute notifications
+          </span>
+          <span>
+            Disappearing message
+          </span>
+          <span>
+            Wallpaper
+          </span>
+        </div>
+      </div>
+
       <div className="absolute inset-0 bg-black bg-opacity-80">
         <div className="relative z-0">
           {/* Header */}
           <div className="flex justify-between items-center gap-3 sticky z-[100] top-0 bg-[#0c1013] p-3">
             <div
               className="flex gap-2 items-center w-full"
-              onClick={() => setShowPopup(true)}
             >
               <span
                 className="material-symbols-outlined text-gray-300 rounded-fullcursor-pointer [tap-highlight-color:transparent]"
@@ -195,8 +261,11 @@ FASHION FRIDAY 🛒`,
                 src={userData.profile ? userData.profile : chat.image}
                 alt="Profile"
                 className="w-10 h-10 rounded-full object-cover object-center"
+                onClick={() => setShowPopup(true)}
+
               />
-              <div>
+              <div onClick={() => setShowPopup(true)}
+              >
                 <h2 className="text-lg text-gray-300">
                   {userData.name != "" ? userData.name : chat.name}
                 </h2>
@@ -207,9 +276,9 @@ FASHION FRIDAY 🛒`,
             </div>
 
             <div className="flex gap-4 text-gray-300">
-              <span class="material-symbols-rounded">videocam</span>
-              <span class="material-symbols-rounded">call</span>
-              <span class="material-symbols-rounded">more_vert</span>
+              <span className="material-symbols-rounded">videocam</span>
+              <span className="material-symbols-rounded">call</span>
+              <span className="material-symbols-rounded" onClick={() => setShowMenu(true)}>more_vert</span>
             </div>
           </div>
 
@@ -218,11 +287,10 @@ FASHION FRIDAY 🛒`,
             {messages.map((msg) => (
               <div
                 key={msg.id}
-                className={`px-3 py-1 relative rounded-xl pb-2 max-w-xs whitespace-pre-wrap ${
-                  msg.location === "oponent"
-                    ? "bg-[#353535] mr-auto text-left"
-                    : "bg-[#134d37] ml-auto"
-                }`}
+                className={`px-3 py-1 relative rounded-xl pb-2 max-w-xs whitespace-pre-wrap ${msg.location === "oponent"
+                  ? "bg-[#353535] mr-auto text-left"
+                  : "bg-[#134d37] ml-auto"
+                  }`}
               >
                 <p className="mr-[75px]">{msg.message}</p>
 
@@ -230,7 +298,7 @@ FASHION FRIDAY 🛒`,
                   {msg.time}
 
                   {msg.location != "oponent" ? (
-                    <span class="material-symbols-sharp text-lg text-blue-300">
+                    <span className="material-symbols-sharp text-lg text-blue-300">
                       done_all
                     </span>
                   ) : (
@@ -247,7 +315,7 @@ FASHION FRIDAY 🛒`,
           {/* Input Bar */}
           <div className="fixed bottom-0 left-0 right-0 p-2 bg-transparent flex items-center gap-3 w-full">
             <div className="flex items-center px-3 py-1.5 bg-[#1f272a] rounded-full text-gray-600">
-              <span class="material-symbols-rounded">add_reaction</span>
+              <span className="material-symbols-rounded">add_reaction</span>
               <input
                 type="text"
                 placeholder="Message"
@@ -256,31 +324,27 @@ FASHION FRIDAY 🛒`,
                 className="flex-1 px-4 py-2 bg-transparent w-[90%] text-white text-lg focus:outline-none placeholder-gray-600"
               />
               <div className="flex gap-4">
-                <span class="material-symbols-rounded">attach_file</span>
+                <span className="material-symbols-rounded">attach_file</span>
 
                 {!message.length > 0 && (
                   <span className="material-symbols-rounded">photo_camera</span>
                 )}
               </div>
             </div>
-            {!message.length > 0 ? (
-              <button className="flex items-center justify-center bg-[#fafafa] hover:bg-[#128c7e] text-gray-900 w-[50px] h-[50px] px-4 py-2 rounded-full">
-                <span class="material-symbols-outlined">mic</span>
-              </button>
-            ) : (
-              ""
-            )}
 
-            {message.length > 0 && (
-              <div className="flex gap-2">
-                <span className="material-symbols-outlined rotate-180 bg-white w-12 h-12 rounded-full text-gray-900 text-[100] flex justify-center items-center text-center text-3xl leading-none">
-                  send
-                </span>
-                <span className="material-symbols-outlined bg-white w-12 h-12 rounded-full text-gray-900 text-[100] flex justify-center items-center text-center text-3xl leading-none">
-                  send
-                </span>
-              </div>
+            {message.length > 0 && !isSwitchOn && (
+              <button className="flex items-center justify-center bg-[#fafafa] hover:bg-[#128c7e] text-gray-900 w-[50px] h-[50px] px-4 py-2 rounded-full">
+                <span className="material-symbols-outlined rotate-180">send</span>
+              </button>
             )}
+            <button className="flex items-center justify-center bg-[#fafafa] hover:bg-[#128c7e] text-gray-900 w-[50px] h-[50px] px-4 py-2 rounded-full">
+              {message.length === 0 ? (
+                <span className="material-symbols-outlined">mic</span>
+              ) : (
+                <span className="material-symbols-outlined">send</span>
+
+              )}
+            </button>
           </div>
         </div>
       </div>
