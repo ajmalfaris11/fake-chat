@@ -1,0 +1,40 @@
+.toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: sans-serif;
+}
+
+.switch {
+  width: 50px;
+  height: 25px;
+  border-radius: 30px;
+  background-color: #313131;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.switch.on {
+  background-color: #157852;
+}
+
+.circle {
+  width: 24px;
+  height: 24px;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  transition: left 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.switch.on .circle {
+  left: 28px;
+}
+
+.status-text {
+  font-weight: bold;
+}
