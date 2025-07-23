@@ -1,0 +1,22 @@
+{
+  "name": "Fake Chat",
+  "short_name": "FakeChat",
+  "description": "Create Fake Chat conversations using React.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#006aff",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512x512.webp",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
