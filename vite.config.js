@@ -14,7 +14,7 @@ export default defineConfig({
         description: 'FakeChat for make Fake and fun chatting',
         start_url: '/',
         display: 'standalone',
-        background_color: '#006aff',
+        background_color: '#000000ff',
         theme_color: '#000000',
         icons: [
           {
