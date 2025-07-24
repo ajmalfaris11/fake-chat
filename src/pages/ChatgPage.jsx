@@ -74,6 +74,7 @@ export default function ChatPage() {
 
   // Handle sending text message
   const handleSendText = (direction) => {
+
     if (!message.trim()) return;
     const newMessage = {
       id: Date.now(),
@@ -154,6 +155,14 @@ export default function ChatPage() {
     }
   }, [messages.length]);
 
+  const textareaRef = useRef(null);
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "0px";
+      textareaRef.current.style.height = Math.min(textareaRef.current.scrollHeight, 100) + "px";
+    }
+  }, [message]);
 
   const handleChange = (e) => {
     setMessage(e.target.value);
@@ -348,6 +357,7 @@ export default function ChatPage() {
           <div className="flex items-end p-3 bg-[#1f272a] rounded-3xl text-gray-500 w-full">
             <span className="material-symbols-rounded mb-0.5">add_reaction</span>
             <textarea
+              ref={textareaRef}
               placeholder="Message"
               value={message}
               onChange={(e) => {
@@ -359,7 +369,7 @@ export default function ChatPage() {
               className="bg-transparent px-4 w-[90%] text-white text-lg rounded-md focus:outline-none resize-none placeholder-gray-400"
               style={{
                 maxHeight: "100px",
-                overflowY: "auto", 
+                overflowY: "auto",
               }}
             />
 
