@@ -325,7 +325,7 @@ export default function ChatPage() {
             >
               <p className={`${msg.content.length <= 21 ? "mr-[75px]" : "mr-[0px]"} w-auto break-words overflow-hidden whitespace-pre-wrap`}>{msg.content}</p>
 
-              <div className={`flex items-center gap-2 text-xs right-2 bottom-[4px] text-gray-500 ${msg.content.length % 22 <= 7 && msg.content.length > 7 ? "justify-end" : "absolute"}`}>
+              <div className={`flex items-center gap-2 text-xs right-2 bottom-[4px] text-gray-500 ${msg.content.length % 22 <= 10 && msg.content.length > 10 ? "justify-end" : "absolute"}`}>
                 {msg.time}
 
                 {msg.direction == "send" ? (
@@ -344,17 +344,26 @@ export default function ChatPage() {
         </div>
 
         {/* Input Bar */}
-        <div className="fixed bottom-0 left-0 right-0 p-2 bg-transparent flex items-center gap-1.5 w-full">
-          <div className="flex items-center px-3 py-0.5 bg-[#1f272a] rounded-3xl text-gray-500">
-            <span className="material-symbols-rounded">add_reaction</span>
-            <input
-              type="text"
+        <div className="fixed bottom-0 left-0 right-0 p-2 bg-transparent flex items-end gap-1.5 w-full">
+          <div className="flex items-end p-3 bg-[#1f272a] rounded-3xl text-gray-500 w-full">
+            <span className="material-symbols-rounded mb-0.5">add_reaction</span>
+            <textarea
               placeholder="Message"
               value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              className="flex-1 px-4 py-2 bg-transparent w-[90%] text-white text-lg focus:outline-none placeholder-gray-500"
+              onChange={(e) => {
+                setMessage(e.target.value);
+                e.target.style.height = "auto";
+                e.target.style.height = `${e.target.scrollHeight}px`;
+              }}
+              rows={1}
+              className="bg-transparent px-4 w-[90%] text-white text-lg rounded-md focus:outline-none resize-none placeholder-gray-400"
+              style={{
+                maxHeight: "100px",
+                overflowY: "auto", 
+              }}
             />
-            <div className="flex gap-4">
+
+            <div className="flex gap-4 mb-0.5">
               <span className="material-symbols-rounded">attach_file</span>
 
               {!message.length > 0 && (
