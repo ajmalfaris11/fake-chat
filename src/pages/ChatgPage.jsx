@@ -191,8 +191,8 @@ export default function ChatPage() {
 
   return (
     <div
-      className="h-[100vh] fixed text-white font-sans bg-cover bg-center relative select-none bg-gray-500 overflow-hidden bg-gray-100"
-      // style={{ backgroundImage: `url(${bgImg})` }}
+      className="h-[100vh] fixed text-white font-sans bg-cover bg-center relative select-none bg-gray-500 overflow-hidden relative"
+      style={{ backgroundImage: `url(${bgImg})` }}
     >
       {/* Popup Editor */}
       {showPopup && (
@@ -287,7 +287,7 @@ export default function ChatPage() {
       <div className="w-full h-full absolute inset-0 bg-black bg-opacity-80 overflow-hidden">
 
         {/* Header */}
-        <div className="flex w-full justify-between items-center gap-3 z-[100] top-0 bg-[#0c1013] p-3">
+        <div className="flex w-full justify-between items-center gap-3 z-[100] top-0 bg-[#0c1013]/50 p-3">
           <div
             className="flex gap-2 items-center w-full"
           >
