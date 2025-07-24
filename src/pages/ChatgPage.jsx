@@ -235,7 +235,7 @@ export default function ChatPage() {
                 >
                   <option className="bg-gray-900 text-white rounded-xl" value="online" >Online</option>
                   <option className="bg-gray-900 text-white" value="typing..">Typing</option>
-                  <option className="bg-gray-900 text-white" value={lastSeen.length == 0 ? "online" : `lasat seen today at ${lastSeen}`}>Last Seen</option>   {/* "last seen today at 5:37 PM" */}
+                  <option className="bg-gray-900 text-white" value={lastSeen.length == 0 ? "online" : `last seen today at ${lastSeen}`}>Last Seen</option>   {/* "last seen today at 5:37 PM" */}
                 </select>
               </div>
             </div>
