@@ -26,6 +26,7 @@ export default function ChatPage() {
   const [isSwitchOn, setIsSwitchOn] = useState(false);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const [lastSeen, setLastSeen] = useState("")
 
   const handleToggle = () => {
     setIsSwitchOn(prev => {
@@ -48,17 +49,6 @@ export default function ChatPage() {
     }
   };
 
-  const chatData = {
-    chat: [
-      {
-        from: "",
-        message: "",
-        time: "",
-        type: "",
-      },
-    ],
-    mode: "",
-  };
 
   const goBack = () => {
     navigate("/whats-app");
@@ -75,7 +65,7 @@ export default function ChatPage() {
 
   // Handle sending text message
   const handleSendText = (direction) => {
-
+      setLastSeen(formatTime(new Date()))
     if (!message.trim()) return;
     const newMessage = {
       id: Date.now(),
@@ -199,7 +189,7 @@ export default function ChatPage() {
       {showPopup && (
         <div className="fixed inset-0 bg-black flex justify-center items-center z-50 h-[100vh] relative w-full">
           <div className="bg-gray-900/50 space-y-4 shadow-lg h-full w-full flex  flex-col items-center">
-            <h3 className="text-lg font-bold mb-2 bg-[##1f272b] w-full text-center p-4 border-b-[0.5px] border-gray-900">
+            <h3 className="text-lg font-bold mb-2 bg-[#1f272b] w-full text-center p-4 border-b-[0.5px] border-gray-900">
               EDIT PROFILE
             </h3>
 
@@ -235,17 +225,20 @@ export default function ChatPage() {
                 }
                 className="w-full px-4 py-4 border border-gray-700 rounded-2xl bg-transparent text-white"
               />
-              <input
-                type="text"
-                placeholder="Status"
-                value={editData.status}
-                onChange={(e) =>
-                  setEditData({ ...editData, status: e.target.value })
-                }
-                className="w-full px-4 py-4 border border-gray-700 rounded-2xl bg-transparent text-white"
-              />
+              <div className="pr-5 w-full px-4 py-4 border border-gray-700 rounded-2xl bg-transparent">
+                <select
+                  value={editData.status}
+                  onChange={(e) =>
+                    setEditData({ ...editData, status: e.target.value })
+                  }
+                  className="w-full border-none border-gray900 bg-transparent text-white outline-none"
+                >
+                  <option className="bg-gray-900 text-white rounded-xl" value="online" >Online</option>
+                  <option className="bg-gray-900 text-white" value="typing..">Typing</option>
+                  <option className="bg-gray-900 text-white" value={lastSeen.length == 0 ? "online" : `lasat seen today at ${lastSeen}`}>Last Seen</option>   {/* "last seen today at 5:37 PM" */}
+                </select>
+              </div>
             </div>
-
             <div className="flex w-full justify-between fixed bottom-0">
               <button
                 onClick={() => setShowPopup(false)}
@@ -288,15 +281,15 @@ export default function ChatPage() {
       <div className="w-full h-full absolute inset-0 bg-black bg-opacity-80 overflow-hidden">
 
         {/* Header */}
-        <div className="flex w-full justify-between items-center gap-3 z-[100] top-0 bg-[#0b1014] p-3">
+        <div className="flex w-full justify-between items-center z-[100] top-0 bg-[#0b1014] p-3">
           <div
-            className="flex gap-2 items-center w-full"
+            className="flex items-center w-full"
           >
             <span
               className="material-symbols-outlined text-gray-300 rounded-fullcursor-pointer [tap-highlight-color:transparent]"
               onClick={goBack}
             >
-              arrow_left_alt
+              arrow_back
             </span>
             <img
               src={userData.profile ? userData.profile : chat.image}
@@ -306,11 +299,12 @@ export default function ChatPage() {
 
             />
             <div onClick={() => setShowPopup(true)}
+              className="ml-2"
             >
               <h2 className="text-lg text-gray-300">
                 {userData.name != "" ? userData.name : chat.name}
               </h2>
-              <p className="text-xs text-gray-400">
+              <p className="text-xs text-gray-300">
                 {userData.status != "" ? userData.status : "online"}
               </p>
             </div>
@@ -368,7 +362,7 @@ export default function ChatPage() {
               className="bg-transparent px-4 w-[90%] text-white text-lg rounded-md focus:outline-none resize-none placeholder-gray-400"
               style={{
                 maxHeight: "100px",
-                height : "28px",
+                height: "28px",
                 overflowY: "auto",
               }}
             />
