@@ -5,6 +5,7 @@ import { useEffect, useState, useRef } from "react";
 
 import bgImg from "../assets/personal/bgImg.png";
 import ToggleSwitch from "../components/ToggleSwitch";
+import waDoneTick from "../assets/watsapp/waDoneTick.webp"
 
 export default function ChatPage() {
   const { id } = useParams();
@@ -159,7 +160,7 @@ export default function ChatPage() {
 
   useEffect(() => {
     if (textareaRef.current) {
-      textareaRef.current.style.height = "0px";
+      textareaRef.current.style.height = "28px";
       textareaRef.current.style.height = Math.min(textareaRef.current.scrollHeight, 100) + "px";
     }
   }, [message]);
@@ -198,12 +199,12 @@ export default function ChatPage() {
       {showPopup && (
         <div className="fixed inset-0 bg-black flex justify-center items-center z-50 h-[100vh] relative w-full">
           <div className="bg-gray-900/50 space-y-4 shadow-lg h-full w-full flex  flex-col items-center">
-            <h3 className="text-lg font-bold mb-2 bg-gray-900/50 w-full text-center p-4 border-b-[0.5px] border-gray-800">
+            <h3 className="text-lg font-bold mb-2 bg-[##1f272b] w-full text-center p-4 border-b-[0.5px] border-gray-900">
               EDIT PROFILE
             </h3>
 
             <div
-              className="w-[100px] h-[100px] bg-white rounded-full relative flex justify-center items-center bg-cover bg-center"
+              className="w-[150px] h-[150px] bg-white rounded-full relative flex justify-center items-center bg-cover bg-center"
               style={{
                 backgroundImage: `url(${userData.profile || chat.image})`,
               }}
@@ -217,7 +218,7 @@ export default function ChatPage() {
                 onChange={handleImageChange}
               />
 
-              <div className="w-5 h-5 rounded-full bg-green-500 absolute z-10 right-3 bottom-1 flex justify-center items-center cursor-pointer">
+              <div className="w-10 h-10 rounded-full bg-green-500 absolute z-10 right-2 bottom-1 flex justify-center items-center cursor-pointer">
                 <span className="material-symbols-sharp text-sm text-white">
                   edit
                 </span>
@@ -287,7 +288,7 @@ export default function ChatPage() {
       <div className="w-full h-full absolute inset-0 bg-black bg-opacity-80 overflow-hidden">
 
         {/* Header */}
-        <div className="flex w-full justify-between items-center gap-3 z-[100] top-0 bg-[#0c1013] p-3">
+        <div className="flex w-full justify-between items-center gap-3 z-[100] top-0 bg-[#0b1014] p-3">
           <div
             className="flex gap-2 items-center w-full"
           >
@@ -328,8 +329,8 @@ export default function ChatPage() {
             <div
               key={msg.id}
               className={`px-3 py-1 relative rounded-xl pb-2 max-w-xs whitespace-pre-wrap ${msg.direction === "receive"
-                ? "bg-[#353535] mr-auto text-left"
-                : "bg-[#134d37] ml-auto"
+                ? "bg-[#1f272a] mr-auto text-left"
+                : "bg-[#194a38] ml-auto"
                 }`}
             >
               <p className={`${msg.content.length <= 21 ? "mr-[75px]" : "mr-[0px]"} w-auto break-words overflow-hidden whitespace-pre-wrap`}>{msg.content}</p>
@@ -338,9 +339,7 @@ export default function ChatPage() {
                 {msg.time}
 
                 {msg.direction == "send" ? (
-                  <span className="material-symbols-rounded text-lg text-blue-400  h-[13px] flex justify-center text-center items-center">
-                    done_all
-                  </span>
+                  <img src={waDoneTick} alt="done" className="w-4" />
                 ) : (
                   ""
                 )}
@@ -354,7 +353,7 @@ export default function ChatPage() {
 
         {/* Input Bar */}
         <div className="fixed bottom-0 left-0 right-0 p-2 bg-transparent flex items-end gap-1.5 w-full">
-          <div className="flex items-end p-3 bg-[#1f272a] rounded-3xl text-gray-500 w-full">
+          <div className="flex items-end p-3 bg-[#1f272b] rounded-3xl text-gray-500 w-full">
             <span className="material-symbols-rounded mb-0.5">add_reaction</span>
             <textarea
               ref={textareaRef}
@@ -369,6 +368,7 @@ export default function ChatPage() {
               className="bg-transparent px-4 w-[90%] text-white text-lg rounded-md focus:outline-none resize-none placeholder-gray-400"
               style={{
                 maxHeight: "100px",
+                height : "28px",
                 overflowY: "auto",
               }}
             />
