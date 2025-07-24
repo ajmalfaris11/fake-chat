@@ -94,50 +94,7 @@ export default function ChatPage() {
     }
   };
 
-  //   const messages = [
-  //     { id: 1, message: "k", time: "4:54 PM" },
-  //     { id: 2, message: "?", time: "5:21 PM" },
-  //     {
-  //       id: 3,
-  //       type: "text",
-  //       message: "ill pay right now",
-  //       time: "7:23 PM",
-  //       location: "oponent",
-  //     },
-  //     {
-  //       id: 4,
-  //       type: "text",
-  //       message: "K bro",
-  //       time: "7:23 PM",
-  //     },
-  //     {
-  //       id: 5,
-  //       type: "text",
-  //       message: "wait",
-  //       time: "7:23 PM",
-  //       location: "oponent",
-  //     },
 
-  //     {
-  //       id: 6,
-  //       message: `Hi!We’ve received your payment successfully ✅
-  // Your order is now being packed 📦 and will be dispatched soon ✈️
-
-  // Thank you for shopping with 
-  // FASHION FRIDAY 🛒`,
-  //       time: "7:54 PM",
-  //     },
-  //     { id: 7, message: "Bro size", time: "7:58 PM" },
-  //     {
-  //       id: 8,
-  //       message: `Hi!We’ve received your payment successfully ✅
-  // Your order is now being packed 📦 and will be dispatched soon ✈️
-
-  // Thank you for shopping with 
-  // FASHION FRIDAY 🛒`,
-  //       time: "7:54 PM",
-  //     },
-  //   ];
 
   // Scroll to bottom on mount or new message
   useEffect(() => {
