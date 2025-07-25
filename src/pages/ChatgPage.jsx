@@ -68,7 +68,7 @@ export default function ChatPage() {
 
   // Handle sending text message
   const handleSendText = (direction) => {
-      setPrevDirection(direction);
+    setPrevDirection(direction);
     setLastSeen(formatTime(new Date()))
     if (!message.trim()) return;
     const newMessage = {
@@ -285,16 +285,16 @@ export default function ChatPage() {
           {messages.map((msg) => (
 
             <div
-              className={`flex relative ${msg.direction !== msg.prevDirection ? "pt-0.5" :""}`}>
+              className={`flex relative ${msg.direction !== msg.prevDirection ? "pt-0.5" : ""}`}>
               {msg.direction !== msg.prevDirection && msg.direction === "receive" ? <img src={chatLeftCorner} className="w-5 h-3 -left-2 absolute " /> : msg.prevDirection !== msg.direction && msg.direction === "send" ? <img src={chatRightCorner} className="w-5 h-3 -right-2 absolute " /> : null}
               <div
                 key={msg.id}
-                className={`px-3 py-1 relative rounded-xl pb-2 max-w-xs whitespace-pre-wrap ${msg.direction === "receive"
+                className={`px-3 py-1 relative rounded-xl pb-2 max-w-[80vw] whitespace-pre-wrap ${msg.direction === "receive"
                   ? "bg-[#1f272b] mr-auto text-left"
                   : "bg-[#194a38] ml-auto"
                   }`}
               >
-                <p className={`${msg.content.length <= 21 ? "mr-[75px]" : "mr-[0px]"} w-auto break-words overflow-hidden whitespace-pre-wrap`}>{msg.content}</p>
+                <p className={`${msg.content.length <= 21 ? "mr-[80px]" : "mr-[0px]"} ${msg.direction === "receive" && msg.content.length <= 21 ? "mr-[60px]" : ""} w-auto break-words overflow-hidden whitespace-pre-wrap`}>{msg.content}</p>
 
                 <div className={`flex items-center gap-2 text-xs right-2 bottom-[4px] text-gray-500 ${msg.content.length % 22 <= 10 && msg.content.length > 10 ? "justify-end" : "absolute"}`}>
                   {msg.time}
