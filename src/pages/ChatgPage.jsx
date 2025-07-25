@@ -281,11 +281,11 @@ export default function ChatPage() {
         </div>
 
         {/* Messages */}
-        <div className="space-y-1 overflow-y-scroll px-4 h-[82%] flex flex-col pt-4 w-full">
+        <div className="overflow-y-scroll px-4 h-[82%] flex flex-col pt-4 w-full">
           {messages.map((msg) => (
 
             <div
-              className={`flex relative ${msg.direction !== msg.prevDirection ? "pt-0.5" : ""}`}>
+              className={`flex relative ${msg.direction !== msg.prevDirection ? "pt-2" : "pt-0.5"}`}>
               {msg.direction !== msg.prevDirection && msg.direction === "receive" ? <img src={chatLeftCorner} className="w-5 h-3 -left-2 absolute " /> : msg.prevDirection !== msg.direction && msg.direction === "send" ? <img src={chatRightCorner} className="w-5 h-3 -right-2 absolute " /> : null}
               <div
                 key={msg.id}
