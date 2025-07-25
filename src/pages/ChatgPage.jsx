@@ -294,7 +294,7 @@ export default function ChatPage() {
                   : "bg-[#194a38] ml-auto"
                   }`}
               >
-                <p className={`${msg.content.length <= 21 ? "mr-[80px]" : "mr-[0px]"} ${msg.direction === "receive" && msg.content.length <= 21 ? "mr-[60px]" : ""} w-auto break-words overflow-hidden whitespace-pre-wrap`}>{msg.content}</p>
+                <p className={`${msg.content.length <= 21 && msg.direction === "send" ?  "mr-[80px]" : "mr-[0px]"} ${msg.direction === "receive" && msg.content.length <= 21 ? "mr-[60px]" : ""} w-auto break-words overflow-hidden whitespace-pre-wrap`}>{msg.content}</p>
 
                 <div className={`flex items-center gap-2 text-xs right-2 bottom-[4px] text-gray-500 ${msg.content.length % 22 <= 10 && msg.content.length > 10 ? "justify-end" : "absolute"}`}>
                   {msg.time}
