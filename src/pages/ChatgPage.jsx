@@ -6,6 +6,8 @@ import { useEffect, useState, useRef } from "react";
 import bgImg from "../assets/personal/bgImg.png";
 import ToggleSwitch from "../components/ToggleSwitch";
 import waDoneTick from "../assets/watsapp/waDoneTick.webp"
+import chatLeftCorner from "../assets/watsapp/chatLeftCorner.webp"
+import chatRightCorner from "../assets/watsapp/chatRightCorner.webp"
 
 export default function ChatPage() {
   const { id } = useParams();
@@ -26,7 +28,8 @@ export default function ChatPage() {
   const [isSwitchOn, setIsSwitchOn] = useState(false);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  const [lastSeen, setLastSeen] = useState("")
+  const [lastSeen, setLastSeen] = useState("");
+  const [prevDirection, setPrevDirection] = useState("none");
 
   const handleToggle = () => {
     setIsSwitchOn(prev => {
@@ -65,15 +68,18 @@ export default function ChatPage() {
 
   // Handle sending text message
   const handleSendText = (direction) => {
-      setLastSeen(formatTime(new Date()))
+      setPrevDirection(direction);
+    setLastSeen(formatTime(new Date()))
     if (!message.trim()) return;
     const newMessage = {
       id: Date.now(),
       type: 'text',
       content: message,
       direction: direction,
+      prevDirection: prevDirection,
       time: formatTime(new Date()),
     };
+    setPrevDirection(direction);
     setMessages(prev => [...prev, newMessage]);
     setMessage('');
   };
@@ -191,7 +197,7 @@ export default function ChatPage() {
                   className="w-full border-none border-gray900 bg-transparent text-white outline-none"
                 >
                   <option className="bg-gray-900 text-white rounded-xl" value="online" >Online</option>
-                  <option className="bg-gray-900 text-white" value="typing..">Typing</option>
+                  <option className="bg-gray-900 text-white" value="typing...">Typing</option>
                   <option className="bg-gray-900 text-white" value={lastSeen.length == 0 ? "online" : `last seen today at ${lastSeen}`}>Last Seen</option>   {/* "last seen today at 5:37 PM" */}
                 </select>
               </div>
@@ -275,25 +281,30 @@ export default function ChatPage() {
         </div>
 
         {/* Messages */}
-        <div className="space-y-1 overflow-y-scroll px-2 h-[82%] flex flex-col pt-4 w-full">
+        <div className="space-y-1 overflow-y-scroll px-4 h-[82%] flex flex-col pt-4 w-full">
           {messages.map((msg) => (
+
             <div
-              key={msg.id}
-              className={`px-3 py-1 relative rounded-xl pb-2 max-w-xs whitespace-pre-wrap ${msg.direction === "receive"
-                ? "bg-[#1f272a] mr-auto text-left"
-                : "bg-[#194a38] ml-auto"
-                }`}
-            >
-              <p className={`${msg.content.length <= 21 ? "mr-[75px]" : "mr-[0px]"} w-auto break-words overflow-hidden whitespace-pre-wrap`}>{msg.content}</p>
+              className={`flex relative ${msg.direction !== msg.prevDirection ? "pt-0.5" :""}`}>
+              {msg.direction !== msg.prevDirection && msg.direction === "receive" ? <img src={chatLeftCorner} className="w-5 h-3 -left-2 absolute " /> : msg.prevDirection !== msg.direction && msg.direction === "send" ? <img src={chatRightCorner} className="w-5 h-3 -right-2 absolute " /> : null}
+              <div
+                key={msg.id}
+                className={`px-3 py-1 relative rounded-xl pb-2 max-w-xs whitespace-pre-wrap ${msg.direction === "receive"
+                  ? "bg-[#1f272b] mr-auto text-left"
+                  : "bg-[#194a38] ml-auto"
+                  }`}
+              >
+                <p className={`${msg.content.length <= 21 ? "mr-[75px]" : "mr-[0px]"} w-auto break-words overflow-hidden whitespace-pre-wrap`}>{msg.content}</p>
 
-              <div className={`flex items-center gap-2 text-xs right-2 bottom-[4px] text-gray-500 ${msg.content.length % 22 <= 10 && msg.content.length > 10 ? "justify-end" : "absolute"}`}>
-                {msg.time}
+                <div className={`flex items-center gap-2 text-xs right-2 bottom-[4px] text-gray-500 ${msg.content.length % 22 <= 10 && msg.content.length > 10 ? "justify-end" : "absolute"}`}>
+                  {msg.time}
 
-                {msg.direction == "send" ? (
-                  <img src={waDoneTick} alt="done" className="w-4" />
-                ) : (
-                  ""
-                )}
+                  {msg.direction == "send" ? (
+                    <img src={waDoneTick} alt="done" className="w-4" />
+                  ) : (
+                    ""
+                  )}
+                </div>
               </div>
             </div>
           ))}
@@ -349,7 +360,7 @@ export default function ChatPage() {
           </button>
         </div>
       </div>
-    </div>
+    </div >
 
   );
 }
