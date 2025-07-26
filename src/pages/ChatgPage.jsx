@@ -376,8 +376,14 @@ export default function ChatPage() {
         </div>
 
         {/* Input Bar */}
-        <div className="fixed bottom-0 left-0 right-0 p-2 bg-transparent flex items-end gap-1.5 w-full">
-          <div className="flex items-end p-3 bg-[#1f272b] rounded-3xl text-gray-500 w-full">
+        <div className="fixed bottom-0 left-0 right-0 p-2 bg-transparent flex items-end gap-1.5 w-full bg-wthie">
+          {message.length > 0 && !isSwitchOn && (
+            <button className="flex items-center justify-center bg-[#fafafa] hover:bg-[#128c7e] text-gray-900 w-[46px] h-[46px] px-4 py-2 rounded-full"
+              onClick={() => handleSendText('text', 'receive')}>
+              <span className="material-symbols-outlined rotate-180">send</span>
+            </button>
+          )}
+          <div className="flex items-end px-3 py-2.5 bg-[#1f272b] rounded-3xl text-gray-500 w-full">
             <span className="material-symbols-rounded mb-0.5">add_reaction</span>
             <textarea
               ref={textareaRef}
@@ -415,12 +421,7 @@ export default function ChatPage() {
             </div>
           </div>
 
-          {message.length > 0 && !isSwitchOn && (
-            <button className="flex items-center justify-center bg-[#fafafa] hover:bg-[#128c7e] text-gray-900 w-[46px] h-[46px] px-4 py-2 rounded-full"
-              onClick={() => handleSendText('text', 'receive')}>
-              <span className="material-symbols-outlined rotate-180">send</span>
-            </button>
-          )}
+
           <button className="flex items-center justify-center bg-[#fafafa] hover:bg-[#128c7e] text-gray-900 w-[46px] h-[46px] px-4 py-2 rounded-full"
             onClick={() => handleSendText('text', 'send')}>
             {message.length === 0 ? (
