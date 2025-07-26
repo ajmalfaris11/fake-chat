@@ -30,6 +30,7 @@ export default function ChatPage() {
   const [messages, setMessages] = useState([]);
   const [lastSeen, setLastSeen] = useState("");
   const [prevDirection, setPrevDirection] = useState("none");
+  const [selectedMessageImage, setSelectedMessageImage] = useState(null);
 
   const handleToggle = () => {
     setIsSwitchOn(prev => {
@@ -66,38 +67,35 @@ export default function ChatPage() {
     return `${hours}:${minutes} ${ampm}`;
   }
 
-  // Handle sending text message
-  const handleSendText = (direction) => {
-    setPrevDirection(direction);
+  // Handle message image upload
+  const handleMessageImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSelectedMessageImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // Handle sending message
+  const handleSendText = (type, direction) => {
     setLastSeen(formatTime(new Date()))
-    if (!message.trim()) return;
+    if (!message.trim() && !selectedMessageImage) return;
     const newMessage = {
       id: Date.now(),
-      type: 'text',
+      type: type,
       content: message,
+      image: selectedMessageImage,
       direction: direction,
       prevDirection: prevDirection,
       time: formatTime(new Date()),
     };
     setPrevDirection(direction);
     setMessages(prev => [...prev, newMessage]);
+    setSelectedMessageImage(null);
     setMessage('');
-  };
-
-  // Handle image file selection
-  const handleImageSelect = (event) => {
-    const file = event.target.files[0];
-    if (file && file.type.startsWith('image/')) {
-      const imageUrl = URL.createObjectURL(file);
-      const newMessage = {
-        id: Date.now(),
-        type: 'image',
-        content: imageUrl,
-        sender: 'You',
-        timestamp: new Date().toISOString(),
-      };
-      setMessages(prev => [...prev, newMessage]);
-    }
   };
 
 
@@ -241,6 +239,55 @@ export default function ChatPage() {
         </div>
       </div>
 
+      {/* Image Preview */}
+      {selectedMessageImage && (
+        <div className="flex justify-center items-center mt-2 absolute z-10 w-full h-full bg-black">
+          <div className="absolute flex justify-between top-0 right-0 p-4 z-20 w-full h-auto">
+            <span class="material-symbols-rounded h-[60px] w-[60px] rounded-full bg-gray-900/25 flex justify-center items-center" onClick={() => setSelectedMessageImage(null)}>close</span>
+            <div className="flex items-center gap-2">
+              <span class="material-symbols-rounded h-[60px] w-[60px] rounded-full bg-gray-900/25 flex justify-center items-center">crop_rotate</span>
+              <span class="material-symbols-rounded h-[60px] w-[60px] rounded-full bg-gray-900/25 flex justify-center items-center">add_reaction</span>
+              <span class="material-symbols-rounded h-[60px] w-[60px] rounded-full bg-gray-900/25 flex justify-center items-center">title</span>
+              <span class="material-symbols-rounded h-[60px] w-[60px] rounded-full bg-gray-900/25 flex justify-center items-center">edit</span>
+            </div>
+          </div>
+          <div>
+            <img src={selectedMessageImage} alt="Preview" className="w-full h-full object-cover" />
+          </div>
+
+          {/* Image Controls */}
+          <div className="absolute flex justify-between bottom-10 mx-4 rounded-full left-0 right-0 bg-gray-900 p-3 flex items-center gap-2">
+            <button className="flex items-center justify-center bg-[#fafafa] hover:bg-[#128c7e] text-gray-900 w-[46px] h-[46px] px-4 py-2 rounded-full"
+              onClick={() => handleSendText('image', 'receive')}>
+              <span className="material-symbols-outlined rotate-180">send</span>
+            </button>
+            <textarea
+              ref={textareaRef}
+              placeholder="Add a caption..."
+              value={message}
+              onChange={(e) => {
+                setMessage(e.target.value);
+                e.target.style.height = "auto";
+                e.target.style.height = `${e.target.scrollHeight}px`;
+              }}
+              rows={1}
+              className="bg-transparent px-4 w-[90%] text-white text-lg rounded-md focus:outline-none resize-none placeholder-gray-400"
+              style={{
+                maxHeight: "100px",
+                height: "28px",
+                overflowY: "auto",
+              }}
+            />
+
+            <button className="flex items-center justify-center bg-[#fafafa] hover:bg-[#128c7e] text-gray-900 w-[46px] h-[46px] px-4 py-2 rounded-full"
+              onClick={() => handleSendText('image', 'send')}>
+              <span className="material-symbols-outlined">send</span>
+            </button>
+
+          </div>
+        </div>
+      )}
+
       <div className="w-full h-full absolute inset-0 bg-black bg-opacity-80 overflow-hidden">
 
         {/* Header */}
@@ -283,30 +330,45 @@ export default function ChatPage() {
         {/* Messages */}
         <div className="overflow-y-scroll px-4 h-[82%] flex flex-col pt-4 w-full">
           {messages.map((msg) => (
-
-            <div
-              className={`flex relative ${msg.direction !== msg.prevDirection ? "pt-2" : "pt-0.5"}`}>
-              {msg.direction !== msg.prevDirection && msg.direction === "receive" ? <img src={chatLeftCorner} className="w-5 h-3 -left-2 absolute " /> : msg.prevDirection !== msg.direction && msg.direction === "send" ? <img src={chatRightCorner} className="w-5 h-3 -right-2 absolute " /> : null}
+            msg.type === 'text' ? (
               <div
-                key={msg.id}
-                className={`px-3 py-1 relative rounded-xl pb-2 max-w-[80vw] whitespace-pre-wrap ${msg.direction === "receive"
-                  ? "bg-[#1f272b] mr-auto text-left"
-                  : "bg-[#194a38] ml-auto"
-                  }`}
-              >
-                <p className={`${msg.content.length <= 21 && msg.direction === "send" ?  "mr-[80px]" : "mr-[0px]"} ${msg.direction === "receive" && msg.content.length <= 21 ? "mr-[60px]" : ""} w-auto break-words overflow-hidden whitespace-pre-wrap`}>{msg.content}</p>
+                className={`flex relative ${msg.direction !== msg.prevDirection ? "pt-2" : "pt-0.5"}`}>
+                {msg.direction !== msg.prevDirection && msg.direction === "receive" ? <img src={chatLeftCorner} className="w-5 h-3 -left-2 absolute " /> : msg.prevDirection !== msg.direction && msg.direction === "send" ? <img src={chatRightCorner} className="w-5 h-3 -right-2 absolute " /> : null}
+                <div
+                  key={msg.id}
+                  className={`px-3 py-1 relative rounded-xl pb-2 max-w-[80vw] whitespace-pre-wrap ${msg.direction === "receive"
+                    ? "bg-[#1f272b] mr-auto text-left"
+                    : "bg-[#194a38] ml-auto"
+                    }`}
+                >
+                  <p className={`${msg.content.length <= 21 && msg.direction === "send" ? "mr-[80px]" : "mr-[0px]"} ${msg.direction === "receive" && msg.content.length <= 21 ? "mr-[60px]" : ""} w-auto break-words overflow-hidden whitespace-pre-wrap`}>{msg.content}</p>
 
-                <div className={`flex items-center gap-2 text-xs right-2 bottom-[4px] text-gray-500 ${msg.content.length % 22 <= 10 && msg.content.length > 10 ? "justify-end" : "absolute"}`}>
-                  {msg.time}
+                  <div className={`flex items-center gap-2 text-xs right-2 bottom-[4px] text-gray-500 ${msg.content.length % 22 <= 10 && msg.content.length > 10 ? "justify-end" : "absolute"}`}>
+                    {msg.time}
 
-                  {msg.direction == "send" ? (
-                    <img src={waDoneTick} alt="done" className="w-4" />
-                  ) : (
-                    ""
-                  )}
+                    {msg.direction == "send" ? (
+                      <img src={waDoneTick} alt="done" className="w-4" />
+                    ) : (
+                      ""
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <div
+                className={`flex relative ${msg.direction !== msg.prevDirection ? "pt-2" : "pt-0.5"}`}>
+                {msg.direction !== msg.prevDirection && msg.direction === "receive" ? <img src={chatLeftCorner} className="w-5 h-3 -left-2 absolute " /> : msg.prevDirection !== msg.direction && msg.direction === "send" ? <img src={chatRightCorner} className="w-5 h-3 -right-2 absolute " /> : null}
+                <div
+                  key={msg.id}
+                  className={`px-3 py-1 relative rounded-xl pb-2 max-w-[80vw] whitespace-pre-wrap ${msg.direction === "receive"
+                    ? "bg-[#1f272b] mr-auto text-left"
+                    : "bg-[#194a38] ml-auto"
+                    }`}
+                >
+                  <img src={msg.image} alt="image" />
+                </div>
+              </div>
+            )
           ))}
 
           {/* 👇 Invisible div to scroll to */}
@@ -335,23 +397,32 @@ export default function ChatPage() {
               }}
             />
 
-            <div className="flex gap-4 mb-0.5">
+            <div className="flex items-center gap-4">
               <span className="material-symbols-rounded">attach_file</span>
 
               {!message.length > 0 && (
-                <span className="material-symbols-rounded">photo_camera</span>
+                <label className="flex items-center">
+                  <span className="material-symbols-rounded cursor-pointer">photo_camera</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleMessageImageUpload}
+                    ref={fileInputRef}
+                    className="hidden"
+                  />
+                </label>
               )}
             </div>
           </div>
 
           {message.length > 0 && !isSwitchOn && (
             <button className="flex items-center justify-center bg-[#fafafa] hover:bg-[#128c7e] text-gray-900 w-[46px] h-[46px] px-4 py-2 rounded-full"
-              onClick={() => handleSendText('receive')}>
+              onClick={() => handleSendText('text', 'receive')}>
               <span className="material-symbols-outlined rotate-180">send</span>
             </button>
           )}
           <button className="flex items-center justify-center bg-[#fafafa] hover:bg-[#128c7e] text-gray-900 w-[46px] h-[46px] px-4 py-2 rounded-full"
-            onClick={() => handleSendText('send')}>
+            onClick={() => handleSendText('text', 'send')}>
             {message.length === 0 ? (
               <span className="material-symbols-outlined">mic</span>
             ) : (
