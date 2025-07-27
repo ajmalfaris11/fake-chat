@@ -31,6 +31,7 @@ export default function ChatPage() {
   const [lastSeen, setLastSeen] = useState("");
   const [prevDirection, setPrevDirection] = useState("none");
   const [selectedMessageImage, setSelectedMessageImage] = useState(null);
+  const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
 
   const handleToggle = () => {
     setIsSwitchOn(prev => {
@@ -73,11 +74,26 @@ export default function ChatPage() {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setSelectedMessageImage(reader.result);
+        const imageDataUrl = reader.result;
+
+        setSelectedMessageImage(imageDataUrl);
+
+        // Create a new Image object to extract dimensions
+        const img = new Image();
+        img.src = imageDataUrl;
+
+        img.onload = () => {
+          // Store size in state
+          setImageSize({
+            width: img.naturalWidth,
+            height: img.naturalHeight,
+          });
+        };
       };
       reader.readAsDataURL(file);
     }
   };
+
 
   // Handle sending message
   const handleSendText = (type, direction) => {
@@ -88,6 +104,7 @@ export default function ChatPage() {
       type: type,
       content: message,
       image: selectedMessageImage,
+      imageSize: imageSize,
       direction: direction,
       prevDirection: prevDirection,
       time: formatTime(new Date()),
@@ -366,16 +383,23 @@ export default function ChatPage() {
                   {msg.direction !== msg.prevDirection && msg.direction === "receive" ? <img src={chatLeftCorner} className="w-5 h-3 -left-2 absolute overflow-hidden" /> : msg.prevDirection !== msg.direction && msg.direction === "send" ? <img src={chatRightCorner} className="w-5 h-3 -right-2 absolute " /> : null}
                   <div
                     key={msg.id}
-                    className={`p-1 relative rounded-xl max-w-[80vw] whitespace-pre-wrap ${msg.direction === "receive"
+                    className={`p-1 relative rounded-xl whitespace-pre-wrap ${msg.direction === "receive"
                       ? "bg-[#1f272b] mr-auto text-left"
-                      : "bg-[#194a38] ml-auto"
-                      }`}
+                      : "bg-[#194a38] ml-auto"}
+
+                      ${msg.imageSize.width < msg.imageSize.height ? "w-[65vw] h-full" : "w-[70vw] h-full"} `}
                   >
-                    <div className="w-full h-auto relative overflow-hidden rounded-xl">
-                      <img src={msg.image} alt="image" />
+                    <div className="w-full h-full relative overflow-hidden rounded-xl">
+                      <img
+                        src={msg.image}
+                        alt="image"
+                        className={`w-full ${msg.imageSize.width < msg.imageSize.height ? "max-h-[40vh]" : "h-full"
+                          } object-cover object-center`}
+                      />
 
                       {!msg.content && (
-                        <span className="w-40 h-40 absolute  -bottom-40 -right-8  rounded-full"
+                        <span
+                          className="w-40 h-40 absolute -bottom-40 -right-8 rounded-full"
                           style={{ boxShadow: '0px 0px 100px rgba(0, 0, 0, 1)' }}
                         ></span>
                       )}
