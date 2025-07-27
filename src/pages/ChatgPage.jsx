@@ -243,12 +243,12 @@ export default function ChatPage() {
       {selectedMessageImage && (
         <div className="flex justify-center items-center mt-2 absolute z-10 w-full h-full bg-black">
           <div className="absolute flex justify-between top-0 right-0 p-4 z-20 w-full h-auto">
-            <span class="material-symbols-rounded h-[60px] w-[60px] rounded-full bg-gray-900/25 flex justify-center items-center" onClick={() => setSelectedMessageImage(null)}>close</span>
+            <span className="material-symbols-rounded h-[60px] w-[60px] rounded-full bg-gray-900/25 flex justify-center items-center" onClick={() => setSelectedMessageImage(null)}>close</span>
             <div className="flex items-center gap-2">
-              <span class="material-symbols-rounded h-[60px] w-[60px] rounded-full bg-gray-900/25 flex justify-center items-center">crop_rotate</span>
-              <span class="material-symbols-rounded h-[60px] w-[60px] rounded-full bg-gray-900/25 flex justify-center items-center">add_reaction</span>
-              <span class="material-symbols-rounded h-[60px] w-[60px] rounded-full bg-gray-900/25 flex justify-center items-center">title</span>
-              <span class="material-symbols-rounded h-[60px] w-[60px] rounded-full bg-gray-900/25 flex justify-center items-center">edit</span>
+              <span className="material-symbols-rounded h-[60px] w-[60px] rounded-full bg-gray-900/25 flex justify-center items-center">crop_rotate</span>
+              <span className="material-symbols-rounded h-[60px] w-[60px] rounded-full bg-gray-900/25 flex justify-center items-center">add_reaction</span>
+              <span className="material-symbols-rounded h-[60px] w-[60px] rounded-full bg-gray-900/25 flex justify-center items-center">title</span>
+              <span className="material-symbols-rounded h-[60px] w-[60px] rounded-full bg-gray-900/25 flex justify-center items-center">edit</span>
             </div>
           </div>
           <div>
