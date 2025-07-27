@@ -355,40 +355,48 @@ export default function ChatPage() {
                 </div>
               </div>
             ) : (
-              <div
-                className={`flex relative ${msg.direction !== msg.prevDirection ? "pt-2" : "pt-0.5"}`}>
-                {msg.direction !== msg.prevDirection && msg.direction === "receive" ? <img src={chatLeftCorner} className="w-5 h-3 -left-2 absolute overflow-hidden" /> : msg.prevDirection !== msg.direction && msg.direction === "send" ? <img src={chatRightCorner} className="w-5 h-3 -right-2 absolute " /> : null}
-                <div
-                  key={msg.id}
-                  className={`p-1 relative rounded-xl max-w-[80vw] whitespace-pre-wrap ${msg.direction === "receive"
-                    ? "bg-[#1f272b] mr-auto text-left"
-                    : "bg-[#194a38] ml-auto"
-                    }`}
-                >
-                  <div className="w-full h-auto relative overflow-hidden rounded-xl">
-                    <img src={msg.image} alt="image"  />
-
-                    {!msg.content && (
-                      <span className="w-40 h-40 absolute  -bottom-40 -right-8  rounded-full"
-                        style={{ boxShadow: '0px 0px 100px rgba(0, 0, 0, 1)' }}
-                      ></span>
-                    )}
-                  </div>
-
-                  <div className={`flex items-center gap-2 text-xs right-3 bottom-2  ${msg.content.length % 22 <= 10 && msg.content.length > 10 ? "justify-end" : "absolute"} ${msg.content.length > 0 ? "text-gray-500" : "text-gray-200"} `}>
-                    {msg.time}
-
-                    {msg.direction == "send" ? (
-                      <img src={waDoneTick} alt="done" className="w-4" />
-                    ) : (
-                      ""
-                    )}
-                  </div>
-
-                  {msg.content && (
-                    <p className="px-2 pt-1.5 pb-2 text-white font-light">{msg.content}</p>
-                  )}
+              <div className={`flex justify-end items-center gap-4 ${msg.direction === "receive" ? "flex-row-reverse" : ""}`}>
+                <div className="">
+                  <span className="material-symbols-outlined p-1 rounded-full bg-gray-900/50 cursor-pointer">
+                    forward
+                  </span>
                 </div>
+                <div
+                  className={`flex relative ${msg.direction !== msg.prevDirection ? "pt-2" : "pt-0.5"}`}>
+                  {msg.direction !== msg.prevDirection && msg.direction === "receive" ? <img src={chatLeftCorner} className="w-5 h-3 -left-2 absolute overflow-hidden" /> : msg.prevDirection !== msg.direction && msg.direction === "send" ? <img src={chatRightCorner} className="w-5 h-3 -right-2 absolute " /> : null}
+                  <div
+                    key={msg.id}
+                    className={`p-1 relative rounded-xl max-w-[80vw] whitespace-pre-wrap ${msg.direction === "receive"
+                      ? "bg-[#1f272b] mr-auto text-left"
+                      : "bg-[#194a38] ml-auto"
+                      }`}
+                  >
+                    <div className="w-full h-auto relative overflow-hidden rounded-xl">
+                      <img src={msg.image} alt="image" />
+
+                      {!msg.content && (
+                        <span className="w-40 h-40 absolute  -bottom-40 -right-8  rounded-full"
+                          style={{ boxShadow: '0px 0px 100px rgba(0, 0, 0, 1)' }}
+                        ></span>
+                      )}
+                    </div>
+
+                    <div className={`flex items-center gap-2 text-xs right-3 bottom-2  ${msg.content.length % 22 <= 10 && msg.content.length > 10 ? "justify-end" : "absolute"} ${msg.content.length > 0 ? "text-gray-500" : "text-gray-200"} `}>
+                      {msg.time}
+
+                      {msg.direction == "send" ? (
+                        <img src={waDoneTick} alt="done" className="w-4" />
+                      ) : (
+                        ""
+                      )}
+                    </div>
+
+                    {msg.content && (
+                      <p className="px-2 pt-1.5 pb-2 text-white font-light">{msg.content}</p>
+                    )}
+                  </div>
+                </div>
+
               </div>
             )
           ))}
