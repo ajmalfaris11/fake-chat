@@ -102,7 +102,7 @@ export default function ChatPage() {
     const newMessage = {
       id: Date.now(),
       type: type,
-      content: message,
+      content: message.trim(),
       image: selectedMessageImage,
       imageSize: imageSize,
       direction: direction,
@@ -372,7 +372,7 @@ export default function ChatPage() {
                 </div>
               </div>
             ) : (
-              <div className={`flex justify-end items-center gap-4 ${msg.direction === "receive" ? "flex-row-reverse" : ""}`}>
+              <div className={`flex justify-end items-center gap-2 ${msg.direction === "receive" ? "flex-row-reverse" : ""}`}>
                 <div className="">
                   <span className="material-symbols-outlined p-1 rounded-full bg-gray-900/50 cursor-pointer">
                     forward
@@ -393,7 +393,7 @@ export default function ChatPage() {
                       <img
                         src={msg.image}
                         alt="image"
-                        className={`w-full ${msg.imageSize.width < msg.imageSize.height ? "max-h-[40vh]" : "h-full"
+                        className={`w-full ${msg.imageSize.width < msg.imageSize.height ? "max-h-[45vh]" : "h-full"
                           } object-cover object-center`}
                       />
 
@@ -405,6 +405,10 @@ export default function ChatPage() {
                       )}
                     </div>
 
+                    {msg.content && (
+                      <p className="px-2 pt-1.5 pb-2 text-white">{msg.content}</p>
+                    )}
+
                     <div className={`flex items-center gap-2 text-xs right-3 bottom-2  ${msg.content.length % 22 <= 10 && msg.content.length > 10 ? "justify-end" : "absolute"} ${msg.content.length > 0 ? "text-gray-500" : "text-gray-200"} `}>
                       {msg.time}
 
@@ -414,13 +418,9 @@ export default function ChatPage() {
                         ""
                       )}
                     </div>
-
-                    {msg.content && (
-                      <p className="px-2 pt-1.5 pb-2 text-white font-light">{msg.content}</p>
-                    )}
                   </div>
-                </div>
 
+                </div>
               </div>
             )
           ))}
