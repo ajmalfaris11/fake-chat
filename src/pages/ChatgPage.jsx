@@ -157,6 +157,9 @@ export default function ChatPage() {
     };
   }, [showMenu]);
 
+  const handleDoubleClick = () => {
+    alert("Double-clicked!");
+  };
 
   return (
     <div
@@ -349,8 +352,11 @@ export default function ChatPage() {
           {messages.map((msg) => (
             msg.type === 'text' ? (
               <div
-                className={`flex relative ${msg.direction !== msg.prevDirection ? "pt-2" : "pt-0.5"}`}>
+                className={`flex relative ${msg.direction !== msg.prevDirection ? "pt-2" : "pt-0.5"}`}
+                onDoubleClick={handleDoubleClick}
+              >
                 {msg.direction !== msg.prevDirection && msg.direction === "receive" ? <img src={chatLeftCorner} className="w-5 h-3 -left-2 absolute " /> : msg.prevDirection !== msg.direction && msg.direction === "send" ? <img src={chatRightCorner} className="w-5 h-3 -right-2 absolute " /> : null}
+
                 <div
                   key={msg.id}
                   className={`px-3 py-1 relative rounded-xl pb-2 max-w-[80vw] whitespace-pre-wrap ${msg.direction === "receive"
@@ -379,7 +385,8 @@ export default function ChatPage() {
                   </span>
                 </div>
                 <div
-                  className={`flex relative ${msg.direction !== msg.prevDirection ? "pt-2" : "pt-0.5"}`}>
+                  className={`flex relative ${msg.direction !== msg.prevDirection ? "pt-2" : "pt-0.5"}`}
+                  onDoubleClick={handleDoubleClick}>
                   {msg.direction !== msg.prevDirection && msg.direction === "receive" ? <img src={chatLeftCorner} className="w-5 h-3 -left-2 absolute overflow-hidden" /> : msg.prevDirection !== msg.direction && msg.direction === "send" ? <img src={chatRightCorner} className="w-5 h-3 -right-2 absolute " /> : null}
                   <div
                     key={msg.id}
