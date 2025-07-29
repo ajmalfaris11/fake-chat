@@ -311,7 +311,7 @@ export default function ChatPage() {
       <div className="w-full h-full absolute inset-0 bg-black bg-opacity-80 overflow-hidden">
 
         {/* Header */}
-        <div className="flex w-full justify-between items-center z-[100] top-0 bg-[#0b1014] p-3">
+        <div className="flex w-full justify-between items-center z-[100] top-0 bg-[#0b1014] py-3 px-1">
           <div
             className="flex items-center w-full"
           >
