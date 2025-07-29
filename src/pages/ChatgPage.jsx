@@ -107,6 +107,8 @@ export default function ChatPage() {
       imageSize: imageSize,
       direction: direction,
       prevDirection: prevDirection,
+      reactionBox: false,
+      reaction: null,
       time: formatTime(new Date()),
     };
     setPrevDirection(direction);
@@ -158,6 +160,15 @@ export default function ChatPage() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showMenu]);
+
+  const reactions = [
+    { emoji: "👍", label: "Like" },
+    { emoji: "❤️", label: "Love" },
+    { emoji: "😂", label: "Laugh" },
+    { emoji: "😮", label: "Wow" },
+    { emoji: "😢", label: "Sad" },
+    { emoji: "🙏", label: "Thanks" },
+  ];
 
   const handleDoubleClick = () => {
     alert("Double-clicked!");
@@ -354,12 +365,54 @@ export default function ChatPage() {
           {messages.map((msg) => (
             msg.type === 'text' ? (
               <div
-                className={`flex relative ${msg.direction !== msg.prevDirection ? "pt-2" : "pt-0.5"}`}
-                onDoubleClick={handleDoubleClick}
-                key={msg.id}
+                className={`flex relative ${msg.direction !== msg.prevDirection ? "pt-2" : "pt-0.5"} ${msg.reaction && "mb-6"}`}
+                onDoubleClick={() => {
+                  setMessages(prevMessages =>
+                    prevMessages.map(m =>
+                      m.id === msg.id ? { ...m, reactionBox: !m.reactionBox } : m
+                    )
+                  );
+                }} key={msg.id}
               >
-                {msg.direction !== msg.prevDirection && msg.direction === "receive" ? <img src={chatLeftCorner} className="w-5 h-3 -left-2 absolute " /> : msg.prevDirection !== msg.direction && msg.direction === "send" ? <img src={chatRightCorner} className="w-5 h-3 -right-2 absolute " /> : null}
 
+                {msg.reactionBox && (
+                  <div className="absolute -top-5 left-1/2 -translate-x-1/2 z-10  p-1 rounded-full w-full bg-[#1f272b] p-2">
+                    <div className="flex items-center gap-3 overflow-scroll scrollbar-hide p-1">
+                      {reactions.map((reaction) => (
+                        <span
+                          key={reaction.emoji}
+                          className="text-2xl cursor-pointer hover:scale-110 transition-transform"
+                          onClick={() => {
+                            setMessages(prevMessages =>
+                              prevMessages.map(m =>
+                                m.id === msg.id ? { ...m, reaction: `${reaction.emoji}`, reactionBox: false } : m
+                              )
+                            );
+                          }}>
+                          {reaction.emoji}
+                        </span>
+                      ))}
+                    </div>
+
+                    <span className="material-symbols-outlined absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer p-2 pr-3 boxShadow-sl rounded-full bg-[#1f272b]"
+                      onClick={() => {
+                        setMessages(prevMessages =>
+                          prevMessages.map(m =>
+                            m.id === msg.id ? { ...m, reaction: "", reactionBox: false } : m
+                          )
+                        );
+                      }}>
+
+                      <span class="material-symbols-outlined p-0 rounded-full bg-[#5e6062] text-[#1f272b] text-4xl w-8 h-8 flex justify-center items-center"
+                        style={{ boxShadow: "-20px 0 30px rgba(39, 39, 39, 1)" }}>
+                        close_small
+                      </span>
+                    </span>
+                  </div>
+                )}
+
+                {msg.direction !== msg.prevDirection && msg.direction === "receive" ? <img src={chatLeftCorner} className="w-5 h-3 -left-2 absolute " /> : msg.prevDirection !== msg.direction && msg.direction === "send" ? <img src={chatRightCorner} className="w-5 h-3 -right-2 absolute " /> : null}
+                {msg.direction !== msg.prevDirection && msg.direction === "receive" ? <img src={chatLeftCorner} className="w-5 h-3 -left-2 absolute " /> : msg.prevDirection !== msg.direction && msg.direction === "send" ? <img src={chatRightCorner} className="w-5 h-3 -right-2 absolute " /> : null}
                 <div
                   key={msg.id}
                   className={`px-3 py-1 relative rounded-xl pb-2 max-w-[80vw] whitespace-pre-wrap ${msg.direction === "receive"
@@ -379,10 +432,55 @@ export default function ChatPage() {
                     )}
                   </div>
                 </div>
+                <div className={`absolute bg-[#1f272b] rounded-full w-8 flex justify-center items-center ${msg.direction == "send" ? "right-2" : "left-2"} -bottom-5 border-[0.5px] border-black`}>{msg.reaction}</div>
               </div>
             ) : (
               <div className={`flex justify-end items-center gap-1 ${msg.direction === "receive" ? "flex-row-reverse" : ""}`}
+                onDoubleClick={() => {
+                  setMessages(prevMessages =>
+                    prevMessages.map(m =>
+                      m.id === msg.id ? { ...m, reactionBox: !m.reactionBox } : m
+                    )
+                  );
+                }}
                 key={msg.id}>
+
+                {msg.reactionBox && (
+                  <div className="absolute left-1/2 -translate-x-1/2 z-10  p-1 rounded-full w-full bg-[#1f272b] p-2">
+                    <div className="flex items-center gap-3 overflow-scroll scrollbar-hide p-1">
+                      {reactions.map((reaction) => (
+                        <span
+                          key={reaction.emoji}
+                          className="text-2xl cursor-pointer hover:scale-110 transition-transform"
+                          onClick={() => {
+                            setMessages(prevMessages =>
+                              prevMessages.map(m =>
+                                m.id === msg.id ? { ...m, reaction: `${reaction.emoji}`, reactionBox: false } : m
+                              )
+                            );
+                          }}>
+                          {reaction.emoji}
+                        </span>
+                      ))}
+                    </div>
+
+                    <span className="material-symbols-outlined absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer p-2 pr-3 boxShadow-sl rounded-full bg-[#1f272b]"
+                      onClick={() => {
+                        setMessages(prevMessages =>
+                          prevMessages.map(m =>
+                            m.id === msg.id ? { ...m, reaction: "", reactionBox: false } : m
+                          )
+                        );
+                      }}>
+
+                      <span class="material-symbols-outlined p-0 rounded-full bg-[#5e6062] text-[#1f272b] text-4xl w-8 h-8 flex justify-center items-center"
+                        style={{ boxShadow: "-20px 0 30px rgba(39, 39, 39, 1)" }}>
+                        close_small
+                      </span>
+                    </span>
+                  </div>
+                )}
+
                 <div className="">
                   <span className="material-symbols-outlined p-1 rounded-full bg-gray-900/50 cursor-pointer">
                     forward
@@ -390,7 +488,7 @@ export default function ChatPage() {
                 </div>
                 <div
                   className={`flex relative ${msg.direction !== msg.prevDirection ? "pt-2" : "pt-0.5"}`}
-                  onDoubleClick={handleDoubleClick}>
+                >
                   {msg.direction !== msg.prevDirection && msg.direction === "receive" ? <img src={chatLeftCorner} className="w-5 h-3 -left-2 absolute overflow-hidden" /> : msg.prevDirection !== msg.direction && msg.direction === "send" ? <img src={chatRightCorner} className="w-5 h-3 -right-2 absolute " /> : null}
                   <div
                     key={msg.id}
@@ -430,6 +528,7 @@ export default function ChatPage() {
                       )}
                     </div>
                   </div>
+                  <div className={`absolute bg-[#1f272b] rounded-full w-8 flex justify-center items-center ${msg.direction == "send" ? "right-2" : "left-2"} -bottom-5 border-[0.5px] border-black`}>{msg.reaction}</div>
 
                 </div>
               </div>
