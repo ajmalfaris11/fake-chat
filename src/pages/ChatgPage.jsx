@@ -164,11 +164,24 @@ export default function ChatPage() {
   const reactions = [
     { emoji: "👍", label: "Like" },
     { emoji: "❤️", label: "Love" },
+    { emoji: "😍", label: "Adore" },
+    { emoji: "😳", label: "Shy" },
     { emoji: "😂", label: "Laugh" },
-    { emoji: "😮", label: "Wow" },
+    { emoji: "😇", label: "Blessed" },
+    { emoji: "🥰", label: "Affection" },
+    { emoji: "😘", label: "Kiss" },
+    { emoji: "😎", label: "Cool" },
+    { emoji: "🤩", label: "Excited" },
+    { emoji: "🥶", label: "Cold" },
+    { emoji: "🫠", label: "Melted" },
+    { emoji: "🫶🏻", label: "Care" },
     { emoji: "😢", label: "Sad" },
-    { emoji: "🙏", label: "Thanks" },
+    { emoji: "🤗", label: "Hug" },
+    { emoji: "🤕", label: "Hurt" },
+    { emoji: "👎🏻", label: "Dislike" },
+    { emoji: "🤝", label: "Respect" }
   ];
+
 
   const handleDoubleClick = () => {
     alert("Double-clicked!");
@@ -365,7 +378,7 @@ export default function ChatPage() {
           {messages.map((msg) => (
             msg.type === 'text' ? (
               <div
-                className={`flex relative ${msg.direction !== msg.prevDirection ? "pt-2" : "pt-0.5"} ${msg.reaction && "mb-6"}`}
+                className={`flex relative ${msg.direction !== msg.prevDirection ? "pt-2" : "pt-0.5"} ${msg.reaction && "mb-5"}`}
                 onDoubleClick={() => {
                   setMessages(prevMessages =>
                     prevMessages.map(m =>
@@ -435,7 +448,7 @@ export default function ChatPage() {
                 <div className={`absolute bg-[#1f272b] rounded-full w-8 flex justify-center items-center ${msg.direction == "send" ? "right-2" : "left-2"} -bottom-5 border-[0.5px] border-black`}>{msg.reaction}</div>
               </div>
             ) : (
-              <div className={`flex justify-end items-center gap-1 ${msg.direction === "receive" ? "flex-row-reverse" : ""}`}
+              <div className={`flex justify-end items-center gap-1 ${msg.direction === "receive" ? "flex-row-reverse" : ""} ${msg.reaction && "mb-5"}`}
                 onDoubleClick={() => {
                   setMessages(prevMessages =>
                     prevMessages.map(m =>
