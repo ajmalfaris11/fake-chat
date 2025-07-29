@@ -187,6 +187,41 @@ export default function ChatPage() {
     alert("Double-clicked!");
   };
 
+  function HighlightMobileNumbers({ text }) {
+    const mobileRegex = /(\+91[\s-]?)?[6-9]\d{9}/g;
+
+    const result = [];
+    let lastIndex = 0;
+
+    // Use matchAll to find all matches with index info
+    for (const match of text.matchAll(mobileRegex)) {
+      const { index } = match;
+      const matchedText = match[0];
+
+      // Push text before the match
+      if (lastIndex < index) {
+        result.push(<span key={lastIndex}>{text.slice(lastIndex, index)}</span>);
+      }
+
+      // Push the matched mobile number with highlight
+      result.push(
+        <a key={index} className="text-blue-300 font-[600] underline decoration-[1px]">
+          {matchedText}
+        </a>
+      );
+
+      lastIndex = index + matchedText.length;
+    }
+
+    // Push the remaining text after last match
+    if (lastIndex < text.length) {
+      result.push(<span key={lastIndex}>{text.slice(lastIndex)}</span>);
+    }
+    return <p>{result}</p>;
+  }
+
+
+
   return (
     <div
       className="h-[100vh] fixed text-white font-sans bg-cover bg-center relative select-none bg-gray-500 overflow-hidden relative"
@@ -433,7 +468,8 @@ export default function ChatPage() {
                     : "bg-[#194a38] ml-auto"
                     }`}
                 >
-                  <p className={`${msg.content.length <= 21 && msg.direction === "send" ? "mr-[80px]" : "mr-[0px]"} ${msg.direction === "receive" && msg.content.length <= 21 ? "mr-[60px]" : ""} w-auto break-words overflow-hidden whitespace-pre-wrap`}>{msg.content}</p>
+                  <p className={`${msg.content.length <= 21 && msg.direction === "send" ? "mr-[80px]" : "mr-[0px]"} ${msg.direction === "receive" && msg.content.length <= 21 ? "mr-[60px]" : ""} w-auto break-words overflow-hidden whitespace-pre-wrap leading-tight`}><HighlightMobileNumbers text={msg.content} />
+                  </p>
 
                   <div className={`flex items-center gap-2 text-xs right-2 bottom-[4px] text-gray-500 ${msg.content.length % 22 <= 10 && msg.content.length > 10 ? "justify-end" : "absolute"}`}>
                     {msg.time}
@@ -447,6 +483,7 @@ export default function ChatPage() {
                 </div>
                 <div className={`absolute bg-[#1f272b] rounded-full w-8 flex justify-center items-center ${msg.direction == "send" ? "right-2" : "left-2"} -bottom-5 border-[0.5px] border-black`}>{msg.reaction}</div>
               </div>
+
             ) : (
               <div className={`flex justify-end items-center gap-1 ${msg.direction === "receive" ? "flex-row-reverse" : ""} ${msg.reaction && "mb-5"}`}
                 onDoubleClick={() => {
@@ -547,6 +584,7 @@ export default function ChatPage() {
               </div>
             )
           ))}
+
 
           {/* 👇 Invisible div to scroll to */}
           <div ref={chatEndRef} />
