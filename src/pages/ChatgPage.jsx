@@ -378,7 +378,7 @@ export default function ChatPage() {
                 </div>
               </div>
             ) : (
-              <div className={`flex justify-end items-center gap-2 ${msg.direction === "receive" ? "flex-row-reverse" : ""}`}>
+              <div className={`flex justify-end items-center gap-1 ${msg.direction === "receive" ? "flex-row-reverse" : ""}`}>
                 <div className="">
                   <span className="material-symbols-outlined p-1 rounded-full bg-gray-900/50 cursor-pointer">
                     forward
@@ -394,14 +394,14 @@ export default function ChatPage() {
                       ? "bg-[#1f272b] mr-auto text-left"
                       : "bg-[#194a38] ml-auto"}
 
-                      ${msg.imageSize.width < msg.imageSize.height ? "w-[65vw] h-full" : "w-[70vw] h-full"} `}
+                      ${msg.imageSize.width < msg.imageSize.height ? "w-[65vw] h-full" : "w-[72vw] h-full"} `}
                   >
                     <div className="w-full h-full relative overflow-hidden rounded-xl">
                       <img
                         src={msg.image}
                         alt="image"
-                        className={`w-full ${msg.imageSize.width < msg.imageSize.height ? "max-h-[45vh]" : "h-full"
-                          } object-cover object-center`}
+                        className={`w-full ${msg.imageSize.width < msg.imageSize.height ? "max-h-[43vh]" : "h-full"
+                          } object-cover object-[0%_33%]`}
                       />
 
                       {!msg.content && (
