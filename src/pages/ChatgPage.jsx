@@ -482,8 +482,7 @@ export default function ChatPage() {
             </div>
           </div>
 
-
-          <button className="flex items-center justify-center bg-[#fafafa] hover:bg-[#128c7e] text-gray-900 w-[46px] h-[46px] px-4 py-2 rounded-full"
+          <button className="flex items-center justify-center bg-[#fafafa] hover:bg-[#27bd63] text-gray-900 w-[46px] h-[46px] px-4 py-2 rounded-full"
             onClick={() => handleSendText('text', 'send')}>
             {message.length === 0 ? (
               <span className="material-symbols-outlined">mic</span>
