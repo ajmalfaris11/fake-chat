@@ -115,8 +115,6 @@ export default function ChatPage() {
     setMessage('');
   };
 
-
-
   // Scroll to bottom on mount or new message
   useEffect(() => {
     if (chatEndRef.current) {
@@ -127,11 +125,15 @@ export default function ChatPage() {
   const textareaRef = useRef(null);
 
   useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "28px";
-      textareaRef.current.style.height = Math.min(textareaRef.current.scrollHeight, 100) + "px";
-    }
-  }, [message]);
+    if (!textareaRef.current) return;
+
+    // Skip effect on initial empty message
+    if (message === "") return;
+
+    // Effect logic when message is non-empty
+    textareaRef.current.style.height = "28px";
+    textareaRef.current.style.height = Math.min(textareaRef.current.scrollHeight, 100) + "px";
+  });
 
   const handleChange = (e) => {
     setMessage(e.target.value);
@@ -354,6 +356,7 @@ export default function ChatPage() {
               <div
                 className={`flex relative ${msg.direction !== msg.prevDirection ? "pt-2" : "pt-0.5"}`}
                 onDoubleClick={handleDoubleClick}
+                key={msg.id}
               >
                 {msg.direction !== msg.prevDirection && msg.direction === "receive" ? <img src={chatLeftCorner} className="w-5 h-3 -left-2 absolute " /> : msg.prevDirection !== msg.direction && msg.direction === "send" ? <img src={chatRightCorner} className="w-5 h-3 -right-2 absolute " /> : null}
 
@@ -378,7 +381,8 @@ export default function ChatPage() {
                 </div>
               </div>
             ) : (
-              <div className={`flex justify-end items-center gap-1 ${msg.direction === "receive" ? "flex-row-reverse" : ""}`}>
+              <div className={`flex justify-end items-center gap-1 ${msg.direction === "receive" ? "flex-row-reverse" : ""}`}
+                key={msg.id}>
                 <div className="">
                   <span className="material-symbols-outlined p-1 rounded-full bg-gray-900/50 cursor-pointer">
                     forward
