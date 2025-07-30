@@ -224,7 +224,7 @@ export default function ChatPage() {
 
   return (
     <div
-      className="h-[100vh] fixed text-white font-sans bg-cover bg-center relative select-none bg-gray-500 overflow-hidden relative"
+      className="h-[100dvh] fixed text-white font-sans bg-cover bg-center relative select-none bg-gray-500 overflow-hidden relative"
       style={{ backgroundImage: `url(${bgImg})` }}
     >
       {/* Popup Editor */}
