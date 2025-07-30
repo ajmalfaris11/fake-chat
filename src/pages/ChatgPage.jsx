@@ -591,7 +591,7 @@ export default function ChatPage() {
         </div>
 
         {/* Input Bar */}
-        <div className="fixed bottom-0 left-0 right-0 px-2 pb-2 pt-1 bg-transparent flex items-end gap-1.5 w-full bg-white">
+        <div className="fixed bottom-0 left-0 right-0 px-2 pb-2 pt-1 bg-transparent flex items-end gap-1.5 w-full">
           {message.length > 0 && !isSwitchOn && (
             <button className="flex items-center justify-center bg-[#fafafa] hover:bg-[#128c7e] text-gray-900 w-[46px] h-[46px] px-4 py-2 rounded-full"
               onClick={() => handleSendText('text', 'receive')}>
