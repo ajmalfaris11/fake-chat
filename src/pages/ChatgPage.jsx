@@ -117,12 +117,7 @@ export default function ChatPage() {
     setMessage('');
   };
 
-  // Scroll to bottom on mount or new message
-  useEffect(() => {
-    if (chatEndRef.current) {
-      chatEndRef.current.scrollIntoView({});
-    }
-  }, [messages.length]);
+
 
   const textareaRef = useRef(null);
 
@@ -220,12 +215,49 @@ export default function ChatPage() {
     return <p>{result}</p>;
   }
 
+  const [screenHeight, setScreenHeight] = useState("100vh");
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
+  const [initialHeight, setInitialHeight] = useState(window.innerHeight);
+
+  useEffect(() => {
+    const actualHeight = window.innerHeight;
+    setScreenHeight(`${actualHeight}px`);
+    setInitialHeight(actualHeight); // store initial height without keyboard
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const newHeight = window.innerHeight;
+
+      // Detect if height reduced by more than 100px → keyboard opened
+      if (initialHeight - newHeight > 100) {
+        setKeyboardOpen(true);
+      } else {
+        setKeyboardOpen(false);
+      }
+      // setScreenHeight(`${newHeight}px`);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [initialHeight]);
+
+  // Scroll to bottom on mount or new message
+  useEffect(() => {
+    if (chatEndRef.current) {
+      chatEndRef.current.scrollIntoView({});
+    }
+  }, [messages.length, keyboardOpen]);
 
 
   return (
     <div
-      className="h-[100dvh] fixed text-white font-sans bg-cover bg-center relative select-none bg-gray-500 overflow-hidden relative"
-      style={{ backgroundImage: `url(${bgImg})` }}
+      className="fixed inset-0 bg-center bg-cover bg-no-repeat text-white font-sans select-none overflow-hidden"
+      style={{
+        backgroundImage: `url(${bgImg})`,
+        height: screenHeight,
+        width: '100vw',
+      }}
     >
       {/* Popup Editor */}
       {showPopup && (
@@ -409,7 +441,7 @@ export default function ChatPage() {
         </div>
 
         {/* Messages */}
-        <div className="overflow-y-scroll px-4 h-[82%] flex flex-col pt-4 w-full">
+        <div className={`overflow-y-scroll px-4 h-[82%] flex flex-col pt-4 w-full ${keyboardOpen ? "pb-[320px]" : "pb-0"}`}>
           {messages.map((msg) => (
             msg.type === 'text' ? (
               <div
