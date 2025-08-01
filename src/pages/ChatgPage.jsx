@@ -115,6 +115,7 @@ export default function ChatPage() {
     setMessages(prev => [...prev, newMessage]);
     setSelectedMessageImage(null);
     setMessage('');
+    textareaRef.current.style.height = "28px";
   };
 
 
@@ -130,7 +131,7 @@ export default function ChatPage() {
     // Effect logic when message is non-empty
     textareaRef.current.style.height = "28px";
     textareaRef.current.style.height = Math.min(textareaRef.current.scrollHeight, 100) + "px";
-  });
+  } , [message]);
 
   const handleChange = (e) => {
     setMessage(e.target.value);
@@ -178,9 +179,6 @@ export default function ChatPage() {
   ];
 
 
-  const handleDoubleClick = () => {
-    alert("Double-clicked!");
-  };
 
   function HighlightMobileNumbers({ text }) {
     const mobileRegex = /(\+91[\s-]?)?[6-9]\d{9}/g;
@@ -235,7 +233,6 @@ export default function ChatPage() {
       } else {
         setKeyboardOpen(false);
       }
-      // setScreenHeight(`${newHeight}px`);
     };
 
     window.addEventListener("resize", handleResize);
