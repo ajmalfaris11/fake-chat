@@ -258,7 +258,8 @@ export default function ChatPage() {
     >
       {/* Popup Editor */}
       {showPopup && (
-        <div className="fixed inset-0 bg-black flex justify-center items-center z-50 h-[100vh] relative w-full">
+        <div className="fixed inset-0 bg-black flex justify-center items-center z-50 relative w-full"
+        style={{ height: screenHeight }}>
           <div className="bg-gray-900/50 space-y-4 shadow-lg h-full w-full flex  flex-col items-center">
             <h3 className="text-lg font-bold mb-2 bg-[#1f272b] w-full text-center p-4 border-b-[0.5px] border-gray-900">
               EDIT PROFILE
@@ -310,7 +311,7 @@ export default function ChatPage() {
                 </select>
               </div>
             </div>
-            <div className="flex w-full justify-between fixed bottom-0">
+            <div className="flex w-full justify-between absolute bottom-0">
               <button
                 onClick={() => setShowPopup(false)}
                 className="px-3 py-4 bg-white text-black w-[50%] rounded-tl-[24px] font-bold text-lg"
