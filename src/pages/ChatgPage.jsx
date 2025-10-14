@@ -9,6 +9,7 @@ import waDoneTick from "../assets/watsapp/waDoneTick.webp"
 import chatLeftCorner from "../assets/watsapp/chatLeftCorner.webp"
 import chatRightCorner from "../assets/watsapp/chatRightCorner.webp"
 
+
 export default function ChatPage() {
   const { id } = useParams();
   const location = useLocation();
@@ -131,7 +132,7 @@ export default function ChatPage() {
     // Effect logic when message is non-empty
     textareaRef.current.style.height = "28px";
     textareaRef.current.style.height = Math.min(textareaRef.current.scrollHeight, 100) + "px";
-  } , [message]);
+  }, [message]);
 
   const handleChange = (e) => {
     setMessage(e.target.value);
@@ -259,7 +260,7 @@ export default function ChatPage() {
       {/* Popup Editor */}
       {showPopup && (
         <div className="fixed inset-0 bg-black flex justify-center items-center z-50 relative w-full"
-        style={{ height: screenHeight }}>
+          style={{ height: screenHeight }}>
           <div className="bg-gray-900/50 space-y-4 shadow-lg h-full w-full flex  flex-col items-center">
             <h3 className="text-lg font-bold mb-2 bg-[#1f272b] w-full text-center p-4 border-b-[0.5px] border-gray-900">
               EDIT PROFILE
@@ -431,9 +432,13 @@ export default function ChatPage() {
             </div>
           </div>
 
-          <div className="flex gap-4 text-gray-300">
-            <span className="material-symbols-rounded">videocam</span>
-            <span className="material-symbols-rounded">call</span>
+          <div className="flex gap-6 text-gray-300">
+            <span className="material-symbols-rounded text-xl">
+              label
+            </span>
+            <span className="material-symbols-rounded">add_call</span>
+            {/* <span className="material-symbols-rounded">videocam</span>
+            <span className="material-symbols-rounded">call</span> */}
             <span className="material-symbols-rounded" onClick={() => setShowMenu(true)}>more_vert</span>
           </div>
         </div>
