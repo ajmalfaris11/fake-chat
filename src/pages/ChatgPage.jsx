@@ -259,7 +259,7 @@ export default function ChatPage() {
     >
       {/* Popup Editor */}
       {showPopup && (
-        <div className="fixed inset-0 bg-black flex justify-center items-center z-50 relative w-full"
+        <div className="fixed inset-0 bg-black flex justify-center items-center z-50 w-full"
           style={{ height: screenHeight }}>
           <div className="bg-gray-900/50 space-y-4 shadow-lg h-full w-full flex  flex-col items-center">
             <h3 className="text-lg font-bold mb-2 bg-[#1f272b] w-full text-center p-4 border-b-[0.5px] border-gray-900">
@@ -334,7 +334,7 @@ export default function ChatPage() {
       )}
 
       {/* popup Menu Box */}
-      <div ref={menuRef} className={`absolute z-50 relative ${showMenu ? "block" : "hidden"}`} >
+      <div ref={menuRef} className={`absolute z-50 ${showMenu ? "block" : "hidden"}`} >
         <div className="w-[100vw] h-[100vh]" onClick={() => setShowMenu(false)}>
         </div>
         <div className="flex flex-col w-52 h-auto bg-[#0c1013] rounded-xl absolute right-1 top-[70px] px-5 py-5 z-30 gap-6">
@@ -368,7 +368,7 @@ export default function ChatPage() {
           </div>
 
           {/* Image Controls */}
-          <div className="absolute flex justify-between bottom-10 mx-4 rounded-full left-0 right-0 bg-gray-900 p-3 flex items-center gap-2">
+          <div className="absolute justify-between bottom-10 mx-4 rounded-full left-0 right-0 bg-gray-900 p-3 flex items-center gap-2">
             <button className="flex items-center justify-center bg-[#fafafa] hover:bg-[#128c7e] text-gray-900 w-[46px] h-[46px] px-4 py-2 rounded-full"
               onClick={() => handleSendText('image', 'receive')}>
               <span className="material-symbols-outlined rotate-180">send</span>
@@ -459,7 +459,7 @@ export default function ChatPage() {
               >
 
                 {msg.reactionBox && (
-                  <div className="absolute -top-5 left-1/2 -translate-x-1/2 z-10  p-1 rounded-full w-full bg-[#1f272b] p-2">
+                  <div className="absolute -top-5 left-1/2 -translate-x-1/2 z-10 p-1 rounded-full w-full bg-[#1f272b]">
                     <div className="flex items-center gap-3 overflow-scroll scrollbar-hide p-1">
                       {reactions.map((reaction) => (
                         <span
@@ -532,7 +532,7 @@ export default function ChatPage() {
                 key={msg.id}>
 
                 {msg.reactionBox && (
-                  <div className="absolute left-1/2 -translate-x-1/2 z-10  p-1 rounded-full w-full bg-[#1f272b] p-2">
+                  <div className="absolute left-1/2 -translate-x-1/2 z-10  p-1 rounded-full w-full bg-[#1f272b]">
                     <div className="flex items-center gap-3 overflow-scroll scrollbar-hide p-1">
                       {reactions.map((reaction) => (
                         <span
