@@ -414,13 +414,33 @@ export default function ChatPage() {
             >
               arrow_back
             </span>
-            <img
-              src={userData.profile ? userData.profile : chat.image}
-              alt="Profile"
-              className="w-10 h-10 rounded-full object-cover object-center"
-              onClick={() => setShowPopup(true)}
+            {userData.profile || chat.image ? (
+              <img
+                src={userData.profile ? userData.profile : chat.image}
+                alt="Profile"
+                className="w-10 h-10 rounded-full object-cover object-center"
+                onClick={() => setShowPopup(true)}
 
-            />
+              />
+            ) : <div className="w-10 h-10 rounded-full object-cover object-center
+            bg-light-blue-900/50 text-blue-300 flex justify-center items-center text-lg font-medium">
+              {(() => {
+                const name = userData.name || chat.name;
+                const first = name.charAt(0);
+                const sixth = name.charAt(5);
+
+                if (first.match(/[A-Za-z]/)) {
+                  // first is a letter
+                  const display = first.toUpperCase() + (sixth && sixth.match(/[A-Za-z]/) ? sixth.toUpperCase() : "");
+                  return display;
+                } else {
+                  // first is not a letter, show icon
+                  return <span className="material-symbols-outlined text-white" style={{ fontVariationSettings: "'FILL' 1" }}>person</span>;
+                }
+              })()}
+            </div>
+            }
+
             <div onClick={() => setShowPopup(true)}
               className="ml-2"
             >
