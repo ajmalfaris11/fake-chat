@@ -460,13 +460,14 @@ export default function ChatPage() {
 
                 key={msg.id}
 
-                onClick={() => {
+                onContextMenu={(e) => {
+                  e.preventDefault();
                   setMessages(prevMessages =>
                     prevMessages.map(m =>
                       m.id === msg.id ? { ...m, editMsg: true } : m
                     )
                   );
-                  setMessage(msg.content)
+                  setMessage(msg.content);
                 }}
               >
 
@@ -624,7 +625,7 @@ export default function ChatPage() {
                             );
                             setMessage("");
                             console.log(msg);
-                            
+
                           }}
                         >
                           <span className="material-symbols-rounded text-green-700 text-4xl">
