@@ -34,6 +34,14 @@ export default function ChatPage() {
   const [selectedMessageImage, setSelectedMessageImage] = useState(null);
   const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
 
+  const colorThemes = [
+    { bgColor: "bg-red-800/25", textColor: "text-red-300" },
+    { bgColor: "bg-blue-800/25", textColor: "text-blue-300" },
+    { bgColor: "bg-green-800/25", textColor: "text-green-300" },
+    { bgColor: "bg-purple-800/25", textColor: "text-purple-300" },
+    { bgColor: "bg-orange-800/25", textColor: "text-orange-300" },
+  ];
+
   const handleToggle = () => {
     setIsSwitchOn(prev => {
       const newState = !prev;
@@ -249,6 +257,14 @@ export default function ChatPage() {
   }, [messages.length, keyboardOpen]);
 
 
+  const [theme, setTheme] = useState(colorThemes[0]);
+
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * colorThemes.length);
+    setTheme(colorThemes[randomIndex]);
+  }, []);
+
+
   return (
     <div
       className="fixed inset-0 bg-center bg-cover bg-no-repeat text-white font-sans select-none overflow-hidden"
@@ -422,8 +438,8 @@ export default function ChatPage() {
                 onClick={() => setShowPopup(true)}
 
               />
-            ) : <div className="w-10 h-10 rounded-full object-cover object-center
-            bg-light-blue-900/50 text-blue-300 flex justify-center items-center text-lg font-medium">
+            ) : <div className={`w-10 h-10 rounded-full object-cover object-center
+              flex justify-center items-center text-lg font-medium ${theme.bgColor} ${theme.textColor}`}>
               {(() => {
                 const name = userData.name || chat.name;
                 const first = name.charAt(0);
@@ -435,7 +451,7 @@ export default function ChatPage() {
                   return display;
                 } else {
                   // first is not a letter, show icon
-                  return <span className="material-symbols-outlined text-white" style={{ fontVariationSettings: "'FILL' 1" }}>person</span>;
+                  return <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>person</span>;
                 }
               })()}
             </div>
