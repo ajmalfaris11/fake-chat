@@ -533,11 +533,11 @@ export default function ChatPage() {
                     </div>
 
                     {/* Time Inputs */}
-                    <div className="flex gap-2 items-center my-4">
+                    <div className="absolute top-20 flex gap-3 items-center">
                       {/* Hour */}
                       <input
                         type="number"
-                        min="1"
+                        min="0"
                         max="12"
                         value={
                           msg.editHour ||
