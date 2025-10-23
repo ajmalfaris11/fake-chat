@@ -602,7 +602,7 @@ export default function ChatPage() {
                     {/* Message Preview */}
                     <div className="absolute bottom-1.5 w-full flex justify-center items-center flex-col gap-5 px-2">
                       <div
-                        className={`relative text-white w-80 p-2 px-6 rounded-full text-lg ${msg.direction === "send" ? "bg-[#184e3b]" : "bg-[#1f272b]"
+                        className={`relative text-white w-80 p-2 pb-6 px-6 rounded-[20px] text-lg overflow-scroll ${msg.direction === "send" ? "bg-[#184e3b]" : "bg-[#1f272b]"
                           }`}
                       >
                         {msg.content}
