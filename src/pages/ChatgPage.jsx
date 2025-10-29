@@ -746,7 +746,181 @@ export default function ChatPage() {
                     )
                   );
                 }}
-                key={msg.id}>
+                key={msg.id}
+                onContextMenu={(e) => {
+                  e.preventDefault();
+                  setMessages(prevMessages =>
+                    prevMessages.map(m =>
+                      m.id === msg.id ? { ...m, editMsg: true } : m
+                    )
+                  );
+                  setMessage(msg.content);
+                }}
+                >
+
+                   {msg.editMsg && (
+                  <div
+                    className="fixed top-0 left-0 z-50 w-[100vw] h-[100vh] bg-black/50 flex justify-center items-center"
+                  >
+                    {/* Container */}
+                    <div
+                      className="absolute top-0 w-full py-4 px-4 bg-[#14181b] flex gap-4 items-center"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <span
+                        className="material-symbols-outlined cursor-pointer"
+                        onClick={() =>
+                          setMessages((prevMessages) =>
+                            prevMessages.map((m) =>
+                              m.id === msg.id ? { ...m, editMsg: false } : m
+                            )
+                          )
+                        }
+                      >
+                        arrow_back
+                      </span>
+                      <span className="text-xl">Edit Message</span>
+                    </div>
+
+                    {/* Time Inputs */}
+                    <div className="absolute top-20 flex gap-3 items-center">
+                      {/* Hour */}
+                      <input
+                        type="number"
+                        min="0"
+                        max="12"
+                        value={
+                          msg.editHour ||
+                          new Date(
+                            msg.time ? `1970-01-01T${msg.time}` : Date.now()
+                          ).getHours()
+                        }
+                        onChange={(e) => {
+                          const val = Math.max(1, Math.min(12, e.target.value));
+                          setMessages((prev) =>
+                            prev.map((m) =>
+                              m.id === msg.id ? { ...m, editHour: val } : m
+                            )
+                          );
+                        }}
+                        className="w-16 p-2 rounded-md bg-gray-800 text-white text-center"
+                        placeholder="HH"
+                      />
+
+                      <span className="text-xl">:</span>
+
+                      {/* Minute */}
+                      <input
+                        type="number"
+                        min="0"
+                        max="59"
+                        value={
+                          msg.editMinute ||
+                          new Date(
+                            msg.time ? `1970-01-01T${msg.time}` : Date.now()
+                          ).getMinutes()
+                        }
+                        onChange={(e) => {
+                          const val = Math.max(0, Math.min(59, e.target.value));
+                          setMessages((prev) =>
+                            prev.map((m) =>
+                              m.id === msg.id ? { ...m, editMinute: val } : m
+                            )
+                          );
+                        }}
+                        className="w-16 p-2 rounded-md bg-gray-800 text-white text-center"
+                        placeholder="MM"
+                      />
+
+                      {/* AM/PM */}
+                      <select
+                        value={msg.editMeridiem || "AM"}
+                        onChange={(e) => {
+                          setMessages((prev) =>
+                            prev.map((m) =>
+                              m.id === msg.id ? { ...m, editMeridiem: e.target.value } : m
+                            )
+                          );
+                        }}
+                        className="w-20 p-2 rounded-md bg-gray-800 text-white text-center"
+                      >
+                        <option>AM</option>
+                        <option>PM</option>
+                      </select>
+                    </div>
+
+                    {/* Message Preview */}
+                    <div className="absolute bottom-1.5 w-full flex justify-center items-center flex-col gap-5 px-2">
+                      <div
+                        className={`relative text-white w-80 p-2 pb-6 px-6 rounded-[20px] text-lg overflow-scroll ${msg.direction === "send" ? "bg-[#184e3b]" : "bg-[#1f272b]"
+                          }`}
+                      >
+                        {msg.content}
+                        <span className="absolute right-4 bottom-1 text-gray-500 text-sm">
+                          {msg.time}
+                        </span>
+                      </div>
+
+                      {/* Textarea & Tick */}
+                      <div className="w-full flex justify-center items-center gap-2">
+                        <div className="flex items-end px-3 py-2.5 bg-[#1f272b] rounded-3xl text-gray-500 w-full">
+                          <span className="material-symbols-rounded mb-0.5">
+                            add_reaction
+                          </span>
+                          <textarea
+                            ref={textareaRef}
+                            placeholder="Message"
+                            value={message}
+                            onChange={(e) => {
+                              setMessage(e.target.value);
+                              e.target.style.height = "auto";
+                              e.target.style.height = `${e.target.scrollHeight}px`;
+                            }}
+                            rows={1}
+                            className="bg-transparent px-4 w-[90%] text-white text-lg rounded-md focus:outline-none resize-none placeholder-gray-400"
+                            style={{
+                              maxHeight: "100px",
+                              height: "28px",
+                              overflowY: "auto",
+                            }}
+                          />
+                        </div>
+
+                        {/* Tick Button */}
+                        <span
+                          className="bg-white rounded-full p-1 px-1.5 flex justify-center items-center cursor-pointer"
+                          onClick={(e) => {
+                            e.stopPropagation();
+
+                            setMessages((prevMessages) =>
+                              prevMessages.map((m) =>
+                                m.id === msg.id
+                                  ? {
+                                    ...m,
+                                    content: message.trim(),
+                                    time: `${m.editHour
+                                      ?.toString()
+                                      .padStart(2, "0")}:${m.editMinute
+                                        ?.toString()
+                                        .padStart(2, "0")} ${m.editMeridiem || "AM"}`,
+                                    editMsg: false,
+                                  }
+                                  : m
+                              )
+                            );
+                            setMessage("");
+                            console.log(msg);
+
+                          }}
+                        >
+                          <span className="material-symbols-rounded text-green-700 text-4xl">
+                            check
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 {msg.reactionBox && (
                   <div className="absolute left-1/2 -translate-x-1/2 z-10  p-1 rounded-full w-full bg-[#1f272b]">
