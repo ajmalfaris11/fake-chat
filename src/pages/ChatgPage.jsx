@@ -1,6 +1,5 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 
 import bgImg from "../assets/personal/bgImg.png";
@@ -11,7 +10,6 @@ import chatRightCorner from "../assets/watsapp/chatRightCorner.webp"
 
 
 export default function ChatPage() {
-  const { id } = useParams();
   const location = useLocation();
   const chat = location.state?.chat;
   const chatEndRef = useRef(null);
@@ -142,11 +140,6 @@ export default function ChatPage() {
     textareaRef.current.style.height = "28px";
     textareaRef.current.style.height = Math.min(textareaRef.current.scrollHeight, 100) + "px";
   }, [message]);
-
-  const handleChange = (e) => {
-    setMessage(e.target.value);
-    console.log("Message:", e.target.value);
-  };
 
   const menuRef = useRef(null);
 
@@ -1063,7 +1056,7 @@ export default function ChatPage() {
             </div>
           </div>
 
-          <button className="flex items-center justify-center bg-[#fafafa] hover:bg-[#27bd63] text-gray-900 w-[46px] h-[46px] px-4 py-2 rounded-full"
+          <button className="flex items-center justify-center bg-[#27bd63] text-gray-900 w-[46px] h-[46px] px-4 py-2 rounded-full"
             onClick={() => handleSendText('text', 'send')}>
             {message.length === 0 ? (
               <span className="material-symbols-outlined">mic</span>
