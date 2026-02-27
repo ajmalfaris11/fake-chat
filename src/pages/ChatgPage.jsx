@@ -440,11 +440,17 @@ export default function ChatPage() {
 
                 if (first.match(/[A-Za-z]/)) {
                   // first is a letter
-                  const display = first.toUpperCase() + (sixth && sixth.match(/[A-Za-z]/) ? sixth.toUpperCase() : "");
+                  const display =
+                    first.toUpperCase() +
+                    (sixth && sixth.match(/[A-Za-z]/) ? sixth.toUpperCase() : "");
                   return display;
                 } else {
-                  // first is not a letter, show icon
-                  return <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>person</span>;
+                  // generate random uppercase English letter
+                  const randomLetter = String.fromCharCode(
+                    65 + Math.floor(Math.random() * 26)
+                  );
+
+                  return randomLetter;
                 }
               })()}
             </div>
