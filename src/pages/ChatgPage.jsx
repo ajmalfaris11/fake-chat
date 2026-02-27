@@ -413,9 +413,9 @@ export default function ChatPage() {
       <div className="w-full h-full absolute inset-0 bg-black bg-opacity-80 overflow-hidden">
 
         {/* Header */}
-        <div className="flex w-full justify-between items-center z-[100] top-0 bg-[#0b1014] py-3 px-1">
+        <div className="flex w-full justify-between items-center z-[100] top-0 bg-[#0b1014] py-3 px-2">
           <div
-            className="flex items-center w-full"
+            className="flex items-center w-full gap-2"
           >
             <span
               className="material-symbols-outlined text-gray-300 rounded-fullcursor-pointer [tap-highlight-color:transparent]"
@@ -450,26 +450,28 @@ export default function ChatPage() {
             </div>
             }
 
-            <div onClick={() => setShowPopup(true)}
-              className="ml-2"
+            <div
+              onClick={() => setShowPopup(true)}
+              className="ml-2 flex-1 min-w-0"
             >
-              <h2 className="text-lg text-gray-300">
-                {userData.name != "" ? userData.name : chat.name}
+              <h2 className="text-lg text-gray-300 line-clamp-1">
+                {userData.name !== "" ? userData.name : chat.name}
               </h2>
+
               <p className="text-xs text-gray-300">
-                {userData.status != "" ? userData.status : "online"}
+                {userData.status !== "" ? userData.status : "online"}
               </p>
             </div>
           </div>
 
           <div className="flex gap-6 text-gray-300">
-            <span className="material-symbols-rounded text-xl">
+            <span className="material-symbols-rounded text-2xl">
               label
             </span>
-            <span className="material-symbols-rounded">add_call</span>
+            <span className="material-symbols-rounded text-2xl">add_call</span>
             {/* <span className="material-symbols-rounded">videocam</span>
             <span className="material-symbols-rounded">call</span> */}
-            <span className="material-symbols-rounded" onClick={() => setShowMenu(true)}>more_vert</span>
+            <span className="material-symbols-rounded text-2xl" onClick={() => setShowMenu(true)}>more_vert</span>
           </div>
         </div>
 
@@ -749,9 +751,9 @@ export default function ChatPage() {
                   );
                   setMessage(msg.content);
                 }}
-                >
+              >
 
-                   {msg.editMsg && (
+                {msg.editMsg && (
                   <div
                     className="fixed top-0 left-0 z-50 w-[100vw] h-[100vh] bg-black/50 flex justify-center items-center"
                   >
