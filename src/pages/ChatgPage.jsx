@@ -474,7 +474,7 @@ export default function ChatPage() {
         </div>
 
         {/* Messages */}
-        <div className={`overflow-y-scroll px-4 h-[83%] flex flex-col pt-4 w-full ${keyboardOpen ? "pb-[320px]" : "pb-0"}`}>
+        <div className={`overflow-y-scroll px-4 h-[84%] flex flex-col pt-4 w-full  ${keyboardOpen ? "pb-[320px]" : "pb-0"}`}>
           {messages.map((msg) => (
             msg.type === 'text' ? (
               <div
